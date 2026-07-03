@@ -1,0 +1,7 @@
+{
+  "_routes": [
+    { "bridge": "squid", "kind": "direct", "via": null, "amountOut": "99.8178", "amountOutUsd": 99.81, "netUsd": 99.62, "etaSeconds": 10, "maxAmountInUsd": 25000 },
+    { "bridge": "near-intents", "kind": "direct", "via": null, "amountOut": "99.5916", "amountOutUsd": 99.59, "netUsd": 99.41, "etaSeconds": 42, "maxAmountInUsd": 400000 },
+    { "bridge": "allbridge", "kind": "direct", "via": null, "amountOut": "99.7631", "amountOutUsd": 99.76, "netUsd": 99.55, "etaSeconds": 60, "maxAmountInUsd": 3277577.419 }
+  ]
+}
