@@ -1,4 +1,4 @@
-import { BRIDGE_API, STELLAR_ROUTER, HTTP_TIMEOUT_MS, EVM_ADDR, BridgePair, StellarPair } from "./config.js";
+import { BRIDGE_API, STELLAR_ROUTER, HTTP_TIMEOUT_MS, BridgePair, StellarPair } from "./config.js";
 
 export interface TimedResponse<T> {
   ms: number;
@@ -55,7 +55,7 @@ export function bridgeQuote(pair: BridgePair, fast: boolean): Promise<TimedRespo
       toChain: pair.toChain,
       toToken: pair.toToken,
       amount: pair.amount,
-      sender: EVM_ADDR,
+      sender: pair.sender,
       recipient: pair.recipient,
       dry: true,
       fast,

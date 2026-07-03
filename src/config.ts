@@ -11,8 +11,17 @@ export const STELLAR_ROUTER =
 export const HTTP_TIMEOUT_MS = 30_000;
 
 // Dry-quote sender/recipient placeholders. Quotes are price-only and commit
-// nothing on-chain; these addresses never sign or receive anything.
+// nothing on-chain; these addresses never sign or receive anything. The
+// Stellar one is a deterministic, checksum-valid strkey (sha256 of a fixed
+// seed phrase) - bridges validate the FORMAT of quote parties, not existence,
+// and a malformed placeholder was exactly what produced refusals in run #1.
 export const EVM_ADDR = "0x7431F9AD0119109e03f8AcF8E9F0271DF0Cd1a56";
+export const STELLAR_ADDR = "GANBQBXTG4IPQAZ7ZSBLL3OL5U4FD7L25QKBIVY3HN2UWPHO7J645KQE";
+
+// Sender must match the SOURCE chain's address family; an EVM sender on a
+// Stellar-source pair is rejected by every adapter before pricing.
+export const senderFor = (fromChain: string): string =>
+  fromChain === "stellar" ? STELLAR_ADDR : EVM_ADDR;
 
 export interface BridgePair {
   name: string;
@@ -21,6 +30,7 @@ export interface BridgePair {
   toChain: string;
   toToken: string;
   amount: string;
+  sender: string;
   recipient: string;
 }
 
@@ -34,6 +44,7 @@ export const BRIDGE_PAIRS: BridgePair[] = [
     toChain: "eth",
     toToken: "USDT",
     amount: "100",
+    sender: EVM_ADDR,
     recipient: EVM_ADDR,
   },
   {
@@ -43,7 +54,8 @@ export const BRIDGE_PAIRS: BridgePair[] = [
     toChain: "stellar",
     toToken: "USDC",
     amount: "100",
-    recipient: "G_BENCH_PLACEHOLDER",
+    sender: EVM_ADDR,
+    recipient: STELLAR_ADDR,
   },
   {
     name: "bsc-usdt->stellar-usdc",
@@ -52,7 +64,8 @@ export const BRIDGE_PAIRS: BridgePair[] = [
     toChain: "stellar",
     toToken: "USDC",
     amount: "50",
-    recipient: "G_BENCH_PLACEHOLDER",
+    sender: EVM_ADDR,
+    recipient: STELLAR_ADDR,
   },
   {
     name: "stellar-usdc->eth-usdt",
@@ -61,6 +74,7 @@ export const BRIDGE_PAIRS: BridgePair[] = [
     toChain: "eth",
     toToken: "USDT",
     amount: "50",
+    sender: STELLAR_ADDR,
     recipient: EVM_ADDR,
   },
 ];
