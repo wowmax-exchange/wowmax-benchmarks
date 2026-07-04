@@ -36,7 +36,10 @@ BENCH_FIXTURE=1 npm run bench   # offline pipeline smoke from a captured respons
 ```
 
 `BENCH_REPS` (default 5) controls repetitions per pair; the runner paces
-requests to stay polite to production.
+requests to stay polite to production. The fast mode (Near-only instant
+quote) is benchmarked only on pairs Near actually quotes: on other pairs a
+fast 404 is by-design behaviour - the UI falls back to the full pass - and
+measuring it would count design as failure.
 
 ## Report anatomy
 

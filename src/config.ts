@@ -32,6 +32,14 @@ export interface BridgePair {
   amount: string;
   sender: string;
   recipient: string;
+  /**
+   * The fast pass is Near-only by design; on pairs Near does not quote it
+   * 404s BY DESIGN and the UI transparently falls back to the full pass.
+   * Benchmarking fast where it cannot apply measures nothing - skip it.
+   * (Near currently quotes no stellar-USDC pairs via the aggregator; XLM
+   * pairs it does. Tracked separately as a near-assetmap follow-up.)
+   */
+  fastCapable: boolean;
 }
 
 // Benchmark basket: stable-denominated, small notionals, both directions
@@ -46,6 +54,7 @@ export const BRIDGE_PAIRS: BridgePair[] = [
     amount: "100",
     sender: EVM_ADDR,
     recipient: EVM_ADDR,
+    fastCapable: true,
   },
   {
     name: "eth-usdt->stellar-usdc",
@@ -56,6 +65,7 @@ export const BRIDGE_PAIRS: BridgePair[] = [
     amount: "100",
     sender: EVM_ADDR,
     recipient: STELLAR_ADDR,
+    fastCapable: false,
   },
   {
     name: "bsc-usdt->stellar-usdc",
@@ -66,6 +76,7 @@ export const BRIDGE_PAIRS: BridgePair[] = [
     amount: "50",
     sender: EVM_ADDR,
     recipient: STELLAR_ADDR,
+    fastCapable: false,
   },
   {
     name: "stellar-usdc->eth-usdt",
@@ -76,6 +87,7 @@ export const BRIDGE_PAIRS: BridgePair[] = [
     amount: "50",
     sender: STELLAR_ADDR,
     recipient: EVM_ADDR,
+    fastCapable: false,
   },
 ];
 

@@ -19,7 +19,7 @@ function gitSha(): string | null {
 async function collectLive(): Promise<QuoteSample[]> {
   const samples: QuoteSample[] = [];
   for (const pair of BRIDGE_PAIRS) {
-    for (const fast of [true, false]) {
+    for (const fast of pair.fastCapable ? [true, false] : [false]) {
       for (let i = 0; i < BENCH_REPS; i++) {
         const r = await bridgeQuote(pair, fast);
         samples.push({
