@@ -1,5 +1,7 @@
 name: bench
 on:
+  push:
+    branches: [main]
   schedule:
     - cron: "20 3 * * *"
   workflow_dispatch:
@@ -22,6 +24,8 @@ jobs:
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run bench
+      # Self-check in the run log: what exactly is about to be published.
+      - run: head -c 300 report/latest.json; echo
       - uses: actions/upload-pages-artifact@v3
         with:
           path: report

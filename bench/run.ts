@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
+import { mkdirSync, writeFileSync, readFileSync, rmSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { BRIDGE_PAIRS, STELLAR_PAIRS, BENCH_REPS } from "../src/config.js";
 import { bridgeQuote, stellarQuote } from "../src/client.js";
@@ -67,6 +67,9 @@ async function main() {
   const fixture = process.env.BENCH_FIXTURE === "1";
   const samples = fixture ? collectFixture() : await collectLive();
   const report = summarize(samples, gitSha());
+  // Hard reset the output dir: a stale report must be impossible to publish,
+  // whatever the runner's workspace contained before this line.
+  rmSync("report", { recursive: true, force: true });
   mkdirSync("report/history", { recursive: true });
   const stamp = report.generatedAt.replace(/[:.]/g, "-");
   writeFileSync(`report/history/${stamp}.json`, JSON.stringify({ report, samples }, null, 2));
@@ -75,6 +78,7 @@ async function main() {
   console.log(
     `bench: ${report.totals.ok}/${report.totals.quotes} quotes ok, ${report.pairs.length} pair-modes -> report/index.html`,
   );
+  console.log(`bench: generatedAt=${report.generatedAt} commit=${report.gitSha ?? "n/a"}`);
   if (!fixture && report.totals.ok === 0) {
     console.error("bench: zero successful quotes - refusing to publish an empty report");
     process.exit(1);
