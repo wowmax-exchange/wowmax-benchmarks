@@ -75,6 +75,8 @@ async function main() {
   writeFileSync(`report/history/${stamp}.json`, JSON.stringify({ report, samples }, null, 2));
   writeFileSync("report/latest.json", JSON.stringify(report, null, 2));
   writeFileSync("report/index.html", renderHtml(report));
+  // Branch-served Pages run Jekyll by default; opt out to serve files as-is.
+  writeFileSync("report/.nojekyll", "");
   console.log(
     `bench: ${report.totals.ok}/${report.totals.quotes} quotes ok, ${report.pairs.length} pair-modes -> report/index.html`,
   );

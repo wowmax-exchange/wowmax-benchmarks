@@ -6,18 +6,10 @@ on:
     - cron: "20 3 * * *"
   workflow_dispatch:
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-concurrency:
-  group: pages
-  cancel-in-progress: false
+  contents: write
 jobs:
   bench-and-publish:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -26,17 +18,15 @@ jobs:
       - run: npm run bench
       # Self-check in the run log: what exactly is about to be published.
       - run: head -c 300 report/latest.json; echo
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: report
-      # Pages rollout occasionally flaps with a transient "Deployment failed,
-      # try again later" (seen on runs #2/#4). One in-workflow retry after a
-      # cool-down absorbs it so nightly never needs a human.
-      - id: deployment
-        continue-on-error: true
-        uses: actions/deploy-pages@v4
-      - if: steps.deployment.outcome == 'failure'
-        run: sleep 90
-      - id: deployment_retry
-        if: steps.deployment.outcome == 'failure'
-        uses: actions/deploy-pages@v4
+      # Publish by force-pushing the report as the gh-pages branch. The Pages
+      # deployment API silently failed to roll out on runs #2/#4/#5; branch
+      # serving is the old, boring, reliable path and needs no environment.
+      - name: Publish report to gh-pages
+        run: |
+          cd report
+          git init -b gh-pages
+          git config user.name "bench-bot"
+          git config user.email "bench-bot@users.noreply.github.com"
+          git add -A
+          git commit -m "report: ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages
