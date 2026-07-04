@@ -54,5 +54,21 @@
     "seconds": 11,
     "date": "2026-07-02",
     "note": null
+  },
+  {
+    "bridge": "near-intents",
+    "pair": "stellar-usdc->eth-usdt",
+    "amountUsd": 980,
+    "seconds": 27,
+    "date": "2026-07-01",
+    "note": null
+  },
+  {
+    "bridge": "near-intents",
+    "pair": "eth-usdc->stellar-usdc",
+    "amountUsd": 3,
+    "seconds": 209,
+    "date": "2026-07-02",
+    "note": null
   }
 ]
