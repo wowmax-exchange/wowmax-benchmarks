@@ -1,0 +1,58 @@
+[
+  {
+    "bridge": "allbridge",
+    "pair": "eth-usdt->stellar-usdc",
+    "amountUsd": 100,
+    "seconds": 1047,
+    "date": "2026-07-03",
+    "note": null
+  },
+  {
+    "bridge": "allbridge",
+    "pair": "stellar-usdc->bsc-usdc",
+    "amountUsd": 23,
+    "seconds": 84,
+    "date": "2026-07-01",
+    "note": null
+  },
+  {
+    "bridge": "allbridge",
+    "pair": "eth-usdt->stellar-usdc",
+    "amountUsd": 150,
+    "seconds": 1035,
+    "date": "2026-07-03",
+    "note": null
+  },
+  {
+    "bridge": "squid",
+    "pair": "stellar-usdc->eth-usdt",
+    "amountUsd": 20,
+    "seconds": 10,
+    "date": "2026-07-01",
+    "note": null
+  },
+  {
+    "bridge": "squid",
+    "pair": "eth-usdc->stellar-usdc",
+    "amountUsd": 5,
+    "seconds": 74,
+    "date": "2026-07-02",
+    "note": null
+  },
+  {
+    "bridge": "squid",
+    "pair": "stellar-usdc->eth-usdc",
+    "amountUsd": 4,
+    "seconds": 10,
+    "date": "2026-07-02",
+    "note": null
+  },
+  {
+    "bridge": "squid",
+    "pair": "bsc-usdc->stellar-usdc",
+    "amountUsd": 4,
+    "seconds": 11,
+    "date": "2026-07-02",
+    "note": null
+  }
+]
