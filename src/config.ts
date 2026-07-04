@@ -11,12 +11,15 @@ export const STELLAR_ROUTER =
 export const HTTP_TIMEOUT_MS = 30_000;
 
 // Dry-quote sender/recipient placeholders. Quotes are price-only and commit
-// nothing on-chain; these addresses never sign or receive anything. The
-// Stellar one is a deterministic, checksum-valid strkey (sha256 of a fixed
-// seed phrase) - bridges validate the FORMAT of quote parties, not existence,
-// and a malformed placeholder was exactly what produced refusals in run #1.
+// nothing on-chain; these addresses never sign anything and never receive
+// funds. The EVM one only needs a valid format. The Stellar one must be a
+// REAL activated mainnet account holding a USDC trustline: Near (1Click)
+// validates that a non-native Stellar destination can actually receive the
+// asset (account exists + trustline), so a format-only placeholder silently
+// knocked Near out of every stellar row. This account is activated and holds
+// exactly the USDC trustline (verified against Horizon, 2026-07-04).
 export const EVM_ADDR = "0x7431F9AD0119109e03f8AcF8E9F0271DF0Cd1a56";
-export const STELLAR_ADDR = "GANBQBXTG4IPQAZ7ZSBLL3OL5U4FD7L25QKBIVY3HN2UWPHO7J645KQE";
+export const STELLAR_ADDR = "GAVH5ZWACAY2PHPUG4FL3LHHJIYIHOFPSIUGM2KHK25CJWXHAV6QKDMN";
 
 // Sender must match the SOURCE chain's address family; an EVM sender on a
 // Stellar-source pair is rejected by every adapter before pricing.
@@ -36,8 +39,11 @@ export interface BridgePair {
    * The fast pass is Near-only by design; on pairs Near does not quote it
    * 404s BY DESIGN and the UI transparently falls back to the full pass.
    * Benchmarking fast where it cannot apply measures nothing - skip it.
-   * (Near currently quotes no stellar-USDC pairs via the aggregator; XLM
-   * pairs it does. Tracked separately as a near-assetmap follow-up.)
+   * Near quotes stellar-DESTINATION USDC pairs only for a recipient that
+   * exists and holds the USDC trustline (the placeholder above satisfies
+   * this). The stellar-ORIGIN pair stays full-pass-only until Near
+   * demonstrably quotes it live (1Click answered an opaque 400 for the
+   * previous synthetic sender); flip its fastCapable after a CLI check.
    */
   fastCapable: boolean;
 }
@@ -65,7 +71,7 @@ export const BRIDGE_PAIRS: BridgePair[] = [
     amount: "100",
     sender: EVM_ADDR,
     recipient: STELLAR_ADDR,
-    fastCapable: false,
+    fastCapable: true,
   },
   {
     name: "bsc-usdt->stellar-usdc",
@@ -76,7 +82,7 @@ export const BRIDGE_PAIRS: BridgePair[] = [
     amount: "50",
     sender: EVM_ADDR,
     recipient: STELLAR_ADDR,
-    fastCapable: false,
+    fastCapable: true,
   },
   {
     name: "stellar-usdc->eth-usdt",
@@ -104,5 +110,5 @@ export const STELLAR_PAIRS: StellarPair[] = [
 ];
 
 // Repetitions per pair per benchmark run. p95 needs samples; production needs
-// mercy. 5 x 4 bridge pairs x 2 modes + 5 x 2 stellar pairs = 50 quotes/run.
+// mercy. 5 x (4 full + 3 fast bridge rows) + 5 x 2 stellar pairs = 45 quotes/run.
 export const BENCH_REPS = Number(process.env.BENCH_REPS ?? 5);

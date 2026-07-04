@@ -8,6 +8,11 @@ import {
 } from "../../src/client.js";
 import { STELLAR_ROUTER } from "../../src/config.js";
 
+// Checksum-valid strkey that does NOT exist on mainnet (sha256-derived). The
+// benchmark's own placeholder is a real activated account, so the negative
+// scenarios below keep their own synthetic address on purpose.
+const SYNTHETIC_UNFUNDED = "GANBQBXTG4IPQAZ7ZSBLL3OL5U4FD7L25QKBIVY3HN2UWPHO7J645KQE";
+
 describe("stellar router production adapter /chains/:id/quote (live)", () => {
   it("quotes the flagship XLM -> USDC pair with a concrete route", async () => {
     const r = await stellarQuote({ name: "xlm->usdc", from: "XLM", to: "USDC", amount: "100" });
@@ -75,6 +80,44 @@ describe("stellar router /chains/:id/swap - wallet-flow failure scenarios (live)
   it("rejects an invalid network parameter", async () => {
     const res = await fetch(
       `${STELLAR_ROUTER}/chains/${STELLAR_CHAIN_ID}/swap?from=XLM&to=USDC&amount=10&network=devnet`,
+    );
+    expect(res.status).toBe(400);
+  }, 20_000);
+});
+
+describe("stellar router /chains/:id/swap - execution plans and the trustline fallback (live)", () => {
+  it("returns the classic plan the wallet signs when the contract path is skipped", async () => {
+    const res = await fetch(
+      `${STELLAR_ROUTER}/chains/${STELLAR_CHAIN_ID}/swap?from=XLM&to=USDC&amount=5&executor=classic`,
+    );
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as {
+      stellar?: { mode?: string; strands?: unknown[]; minResourceFee?: string };
+    };
+    expect(body?.stellar?.mode).toBe("classic");
+    expect(Array.isArray(body?.stellar?.strands)).toBe(true);
+    expect((body?.stellar?.strands ?? []).length).toBeGreaterThan(0);
+    expect(String(body?.stellar?.minResourceFee)).toBe("0");
+  }, 30_000);
+
+  it("trustline fallback: an unfunded account still gets the ChangeTrust-capable classic plan", async () => {
+    // SYNTHETIC_UNFUNDED is checksum-valid but does not exist on mainnet, so
+    // any Soroban simulation for it must fail. The router's documented
+    // fallback is the classic plan - the one execution shape the client
+    // extends with a ChangeTrust op in the same transaction (the
+    // trustline-creation flow).
+    const res = await fetch(
+      `${STELLAR_ROUTER}/chains/${STELLAR_CHAIN_ID}/swap?from=XLM&to=USDC&amount=5&account=${SYNTHETIC_UNFUNDED}`,
+    );
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as { stellar?: { mode?: string; strands?: unknown[] } };
+    expect(body?.stellar?.mode).toBe("classic");
+    expect((body?.stellar?.strands ?? []).length).toBeGreaterThan(0);
+  }, 60_000);
+
+  it("rejects a malformed account id explicitly", async () => {
+    const res = await fetch(
+      `${STELLAR_ROUTER}/chains/${STELLAR_CHAIN_ID}/swap?from=XLM&to=USDC&amount=5&account=not-a-stellar-account`,
     );
     expect(res.status).toBe(400);
   }, 20_000);
