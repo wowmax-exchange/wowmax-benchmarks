@@ -2,7 +2,7 @@ import { mkdirSync, writeFileSync, readFileSync, rmSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { BRIDGE_PAIRS, STELLAR_PAIRS, BENCH_REPS } from "../src/config.js";
 import { bridgeQuote, stellarQuote, stellarRichQuote, adapterRouteSummary } from "../src/client.js";
-import { summarize, renderHtml, QuoteSample } from "../src/report.js";
+import { summarize, renderHtml, QuoteSample, TransferTimeRow } from "../src/report.js";
 import { toFiniteNumber } from "../src/stats.js";
 
 const pause = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -107,10 +107,34 @@ function collectFixture(): QuoteSample[] {
   ];
 }
 
+// Observed end-to-end deliveries from live runs. The benchmark itself is dry
+// and never moves funds, so rows come only from recorded real transfers; the
+// section stays absent until data/transfer-times.json is seeded.
+function loadTransferSeed(): TransferTimeRow[] {
+  try {
+    const rows = JSON.parse(readFileSync("data/transfer-times.json", "utf8"));
+    return Array.isArray(rows) ? (rows as TransferTimeRow[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+const FIXTURE_TRANSFERS: TransferTimeRow[] = [
+  {
+    bridge: "fixture",
+    pair: "fixture",
+    amountUsd: 100,
+    seconds: 187,
+    date: "2026-07-04",
+    note: "fixture-mode sample row",
+  },
+];
+
 async function main() {
   const fixture = process.env.BENCH_FIXTURE === "1";
   const samples = fixture ? collectFixture() : await collectLive();
-  const report = summarize(samples, gitSha());
+  const transferTimes = fixture ? FIXTURE_TRANSFERS : loadTransferSeed();
+  const report = { ...summarize(samples, gitSha()), ...(transferTimes.length > 0 ? { transferTimes } : {}) };
   // Hard reset the output dir: a stale report must be impossible to publish,
   // whatever the runner's workspace contained before this line.
   rmSync("report", { recursive: true, force: true });

@@ -32,11 +32,22 @@ export interface PairSummary {
   capacityCoverage: number | null; // share of routes carrying maxAmountInUsd
 }
 
+export interface TransferTimeRow {
+  bridge: string;
+  pair: string;
+  amountUsd: number | null;
+  seconds: number;
+  date: string; // YYYY-MM-DD of the live run
+  note?: string | null;
+}
+
 export interface BenchReport {
   generatedAt: string;
   gitSha: string | null;
   totals: { quotes: number; ok: number };
   pairs: PairSummary[];
+  /** Observed end-to-end deliveries from live runs; absent until seeded. */
+  transferTimes?: TransferTimeRow[];
 }
 
 export function summarize(samples: QuoteSample[], gitSha: string | null): BenchReport {
@@ -104,6 +115,47 @@ export function summarize(samples: QuoteSample[], gitSha: string | null): BenchR
 
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+function fmtDelivery(seconds: number): string {
+  if (!Number.isFinite(seconds) || seconds < 0) return "-";
+  const s = Math.round(seconds);
+  return s >= 60 ? `${Math.floor(s / 60)}m ${s % 60}s` : `${s}s`;
+}
+
+// Observed end-to-end deliveries from live runs. Rendered only when seeded -
+// the quote benchmark itself is dry and never moves funds, so these rows can
+// only come from recorded real transfers (see data/transfer-times.json).
+function renderTransferTimes(rows: TransferTimeRow[]): string {
+  if (rows.length === 0) return "";
+  const body = rows
+    .map(
+      (r) => `<tr>
+<td>${esc(r.bridge)}</td><td>${esc(r.pair)}</td>
+<td>${r.amountUsd === null || r.amountUsd === undefined ? "-" : "$" + r.amountUsd}</td>
+<td>${fmtDelivery(r.seconds)}</td>
+<td>${esc(r.date)}</td>
+<td>${esc(r.note ?? "") || "-"}</td>
+</tr>`,
+    )
+    .join("\n");
+  return `<h2>Observed bridge transfer times</h2>
+<table>
+<tr>
+<th title="bridge that carried the transfer">bridge</th>
+<th title="source -> destination of the live transfer">pair</th>
+<th title="transfer size in USD at the time of the run">amount</th>
+<th title="submission on the source chain to funds delivered on the destination">delivery</th>
+<th title="date of the live run">run date</th>
+<th>note</th>
+</tr>
+${body}
+</table>
+<div class="note">
+<p>End-to-end delivery of real transfers observed during live runs (seeded from the D5 report runs). The quote
+benchmarks above are dry and never move funds; this table only grows when a real delivery is observed and
+recorded.</p>
+</div>`;
+}
+
 export function renderHtml(report: BenchReport): string {
   const rows = report.pairs
     .map((p) => {
@@ -129,6 +181,7 @@ export function renderHtml(report: BenchReport): string {
 </tr>`;
     })
     .join("\n");
+  const transferSection = renderTransferTimes(report.transferTimes ?? []);
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WOWMAX Benchmarks</title>
@@ -139,6 +192,8 @@ table{border-collapse:collapse;width:100%;font-size:.85rem}
 th,td{border:1px solid #d8deea;padding:.45rem .6rem;text-align:left;white-space:nowrap}
 th{background:#f2f5fb} tr:nth-child(even){background:#fafbfe}
 .note{margin-top:1.2rem;color:#68738a;font-size:.85rem;max-width:70rem;white-space:normal}
+.note p{margin:.55rem 0}
+h2{font-size:1.05rem;margin-top:1.8rem}
 </style></head><body>
 <h1>WOWMAX Aggregation Benchmarks</h1>
 <div class="meta">generated ${esc(report.generatedAt)} &middot; commit ${esc(report.gitSha ?? "n/a")} &middot; quotes ${report.totals.ok}/${report.totals.quotes} OK</div>
@@ -158,18 +213,21 @@ th{background:#f2f5fb} tr:nth-child(even){background:#fafbfe}
 ${rows}
 </table>
 <div class="note">
-Method: black-box dry quotes against public production endpoints, ${"BENCH_REPS"} repetitions per pair per mode.
-Stellar rows measure the production adapter route the web app calls (/chains/100000148/quote, answered from the
-router's warm graph snapshot): hops, venue distribution (SDEX / AMMs) and route type - single or multi-hop,
+<p>Method: black-box dry quotes against public production endpoints, ${"BENCH_REPS"} repetitions per pair per
+mode. Latency is end-to-end HTTP. Raw samples for every run live in report/history/.</p>
+<p>Reading the latency columns: p50 is the median - half of the quotes in the run answered at least this fast.
+p95 is the tail: 19 of 20 quotes were faster; with the default 5 repetitions per row, p95 is simply the slowest
+observed quote of the run.</p>
+<p>Bridge rows: improvement bps compares the best aggregated route with the best single alternative in the same
+response (0 when only one bridge quotes the pair). Capacity coverage is the share of returned routes carrying a
+maxAmountInUsd liquidity bound.</p>
+<p>Stellar rows measure the production adapter route the web app calls (/chains/100000148/quote, answered from
+the router's warm graph snapshot): hops, venue distribution (SDEX / AMMs) and route type - single or multi-hop,
 "+split" when a hop is split across pools - come from the returned route. Improvement there is the router's own
 "vs best single pool" figure, taken from one probe per pair of the rich documented /quote endpoint; by the D1
 contract that endpoint rebuilds the graph with live reserves on every request, so its latency is deliberately
-excluded from the latency columns. Capacity coverage does not apply to on-chain DEX routes and is shown as n/a.
-Latency is end-to-end HTTP; p50 is the median - half of the quotes in the run answered at least this fast - and
-p95 is the tail: 19 of 20 quotes were faster (with the default 5 repetitions per row, p95 is simply the slowest
-observed quote of the run). Improvement bps compares the best aggregated route with the best single alternative
-in the same response (0 when only one bridge quotes the pair). Capacity coverage is the share of returned routes
-carrying a maxAmountInUsd liquidity bound. Raw samples for every run live in report/history/.
+excluded from the latency columns. Capacity coverage does not apply to on-chain DEX routes and is shown as n/a.</p>
 </div>
+${transferSection}
 </body></html>`;
 }

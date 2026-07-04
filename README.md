@@ -26,7 +26,11 @@ aggregator (Allbridge, Squid/Coral over Axelar GMP, Near Intents).
     latency columns;
   - **bridge distribution** and **route types** (direct vs composite);
   - **liquidity-bound coverage** - the share of routes carrying a
-    `maxAmountInUsd` capacity estimate.
+    `maxAmountInUsd` capacity estimate;
+  - **bridge transfer times** - end-to-end delivery of real transfers
+    observed during live runs, seeded from `data/transfer-times.json`
+    (the quote suite itself is dry and never moves funds; the section is
+    absent until seeded).
 - Unit tests for the statistics and report pipeline itself.
 
 ## What it deliberately is not

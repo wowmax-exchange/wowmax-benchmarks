@@ -138,6 +138,8 @@ export function stellarQuote(pair: StellarPair): Promise<TimedResponse<StellarAd
 export interface StellarRichQuote {
   wowmax?: { error?: string };
   wowmax_advantage?: { vs_best_single_pool_bps?: number | string };
+  graph?: { classicEdges?: number; sorobanEdges?: number; buildMs?: number };
+  errors?: { classic?: unknown; soroban?: unknown };
   [k: string]: unknown;
 }
 

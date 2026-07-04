@@ -91,6 +91,26 @@ describe("renderHtml", () => {
     expect(html).toContain('title="median end-to-end HTTP latency');
     expect(html).toContain('title="tail latency');
   });
+  it("renders the transfer-times section only when seeded", () => {
+    const base = summarize(samples, null);
+    expect(renderHtml(base)).not.toContain("Observed bridge transfer times");
+    const withRows = renderHtml({
+      ...base,
+      transferTimes: [
+        {
+          bridge: "allbridge",
+          pair: "bsc-usdt->stellar-usdc",
+          amountUsd: 50,
+          seconds: 187,
+          date: "2026-06-30",
+          note: null,
+        },
+      ],
+    });
+    expect(withRows).toContain("Observed bridge transfer times");
+    expect(withRows).toContain("allbridge");
+    expect(withRows).toContain("3m 7s");
+  });
   it("renders stellar capacity as explicit n/a, not a bare dash", () => {
     const stellarOnly: QuoteSample[] = [
       {
