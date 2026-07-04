@@ -14,10 +14,10 @@ aggregator (Allbridge, Squid Coral V2 RFQ, Near Intents).
 - End-to-end scenarios that exercise the **same public HTTP surface the web
   app uses** - dry quotes only, nothing is signed or broadcast.
 - A benchmark runner measuring, per pair and mode:
-  - **quote latency** (p50 / p95; bridge pairs in the fast vs full
-    aggregation pass, stellar pairs on the production adapter route the web
-    app calls - `/chains/100000148/quote`, answered from the router's warm
-    graph snapshot);
+  - **quote latency** (p50 / p95; bridge pairs in the instant (Near-only)
+    and all-bridges passes, stellar pairs on the production adapter route the
+    web app calls - `/chains/100000148/quote`, answered from the router's
+    warm graph snapshot);
   - **route quality improvement** - best aggregated route vs the best single
     alternative, in bps; on stellar rows this is the router's own "vs best
     single pool" figure from one probe per pair of the rich documented
@@ -50,10 +50,11 @@ BENCH_FIXTURE=1 npm run bench   # offline pipeline smoke from a captured respons
 ```
 
 `BENCH_REPS` (default 5) controls repetitions per pair; the runner paces
-requests to stay polite to production. The fast mode (Near-only instant
-quote) is benchmarked only on pairs Near actually quotes: on other pairs a
-fast 404 is by-design behaviour - the UI falls back to the full pass - and
-measuring it would count design as failure.
+requests to stay polite to production and sends one unmeasured warm-up quote
+per pair so connection setup never lands in the columns. The instant pass
+(Near-only first price) is benchmarked only on pairs Near actually quotes: on
+other pairs its 404 is by-design behaviour - the UI falls back to the
+all-bridges pass - and measuring it would count design as failure.
 
 ## Report anatomy
 

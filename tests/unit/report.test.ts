@@ -49,7 +49,7 @@ describe("summarize (stellar DEX-router rows)", () => {
       ms: 9000,
       status: 200,
       routes: null,
-      stellar: { hops: 1, routeType: "single", venues: { sdex: 1 }, advantageBps: 12.4 },
+      stellar: { hops: 1, routeType: "single-pool", venues: { sdex: 1 }, advantageBps: 12.4 },
     },
     {
       pair: "xlm->usdc",
@@ -69,7 +69,7 @@ describe("summarize (stellar DEX-router rows)", () => {
   it("hops feed the routes column, venues feed the distribution column", () => {
     expect(p.meanRoutes).toBe(1.5);
     expect(p.bridges).toEqual({ sdex: 3 });
-    expect(p.kinds).toEqual({ single: 1, "multi-hop": 1 });
+    expect(p.kinds).toEqual({ "single-pool": 1, "multi-hop": 1 });
   });
   it("keeps capacity coverage null - no maxAmountInUsd concept on-chain", () => {
     expect(p.capacityCoverage).toBeNull();
@@ -80,6 +80,7 @@ describe("renderHtml", () => {
   it("produces a self-contained document with the data row", () => {
     const html = renderHtml(summarize(samples, null));
     expect(html).toContain("<!doctype html>");
+    expect(html).toContain(">all bridges<");
     expect(html).toContain("squid:2");
     expect(html).toContain("direct:6");
     expect(html.toLowerCase()).not.toContain("<script");
@@ -119,7 +120,7 @@ describe("renderHtml", () => {
         ms: 9000,
         status: 200,
         routes: null,
-        stellar: { hops: 1, routeType: "single", venues: { sdex: 1 }, advantageBps: 12.4 },
+        stellar: { hops: 1, routeType: "single-pool", venues: { sdex: 1 }, advantageBps: 12.4 },
       },
     ];
     const html = renderHtml(summarize(stellarOnly, null));

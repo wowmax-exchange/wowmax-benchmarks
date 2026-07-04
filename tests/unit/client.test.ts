@@ -28,15 +28,15 @@ describe("adapterRouteSummary", () => {
     expect(s.routeType).toBe("multi-hop+split");
     expect(s.venues).toEqual({ phoenix: 1, soroswap: 1, aqua: 1 });
   });
-  it("labels a one-hop one-pool route as single", () => {
+  it("labels a one-hop one-pool route as single-pool", () => {
     const s = adapterRouteSummary([
       { parts: 10000, from: "native", swaps: [{ to: "usdc:ga5z", part: 10000, market: { id: "B1", name: "sdex" } }] },
     ])!;
     expect(s.hops).toBe(1);
-    expect(s.routeType).toBe("single");
+    expect(s.routeType).toBe("single-pool");
     expect(s.venues).toEqual({ sdex: 1 });
   });
-  it("labels a one-hop multi-pool route as single+split", () => {
+  it("labels a one-hop multi-pool route as single-pool+split", () => {
     const s = adapterRouteSummary([
       {
         parts: 10000,
@@ -48,7 +48,7 @@ describe("adapterRouteSummary", () => {
       },
     ])!;
     expect(s.hops).toBe(1);
-    expect(s.routeType).toBe("single+split");
+    expect(s.routeType).toBe("single-pool+split");
     expect(s.venues).toEqual({ sdex: 1, aqua: 1 });
   });
   it("returns null on an empty or missing route - no metrics, not a zero-hop route", () => {

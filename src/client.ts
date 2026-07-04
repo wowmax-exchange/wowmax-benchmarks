@@ -114,7 +114,7 @@ export function adapterRouteSummary(
       venues[v] = (venues[v] ?? 0) + 1;
     }
   }
-  const routeType = (routes.length > 1 ? "multi-hop" : "single") + (split ? "+split" : "");
+  const routeType = (routes.length > 1 ? "multi-hop" : "single-pool") + (split ? "+split" : "");
   return { hops: routes.length, routeType, venues };
 }
 

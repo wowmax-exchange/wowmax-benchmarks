@@ -115,6 +115,14 @@ export function summarize(samples: QuoteSample[], gitSha: string | null): BenchR
 
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+// Human labels for the mode column. Internal values (and latest.json) keep
+// the stable machine ids; only the rendered page uses these.
+const MODE_LABELS: Record<string, string> = {
+  fast: "instant",
+  full: "all bridges",
+  stellar: "DEX router",
+};
+
 function fmtDelivery(seconds: number): string {
   if (!Number.isFinite(seconds) || seconds < 0) return "-";
   const s = Math.round(seconds);
@@ -171,7 +179,7 @@ export function renderHtml(report: BenchReport): string {
       const capacity =
         p.mode === "stellar" ? "n/a" : p.capacityCoverage === null ? "-" : p.capacityCoverage + "%";
       return `<tr>
-<td>${esc(p.pair)}</td><td>${esc(p.mode)}</td>
+<td>${esc(p.pair)}</td><td>${esc(MODE_LABELS[p.mode] ?? p.mode)}</td>
 <td>${p.ok}/${p.samples}</td>
 <td>${p.p50ms ?? "-"}</td><td>${p.p95ms ?? "-"}</td>
 <td>${p.meanRoutes ?? "-"}</td>
@@ -200,15 +208,15 @@ h2{font-size:1.05rem;margin-top:1.8rem}
 <table>
 <tr>
 <th title="source -> destination (chain-token pairs on bridge rows, DEX pair on stellar rows)">pair</th>
-<th title="fast = Near-only instant pass; full = all bridges; stellar = DEX router, production adapter route">mode</th>
+<th title="instant = the UI's first price (Near only); all bridges = every bridge quoted in parallel; DEX router = on-chain Stellar swap via the production route">mode</th>
 <th title="successful quotes / attempts in this run">ok</th>
 <th title="median end-to-end HTTP latency: half of the quotes in the run answered at least this fast">p50 ms</th>
 <th title="tail latency: 19 of 20 quotes were faster (on 5 samples per row this is simply the slowest observed quote)">p95 ms</th>
 <th title="bridge rows: routes returned per quote; stellar rows: hops in the winning route">routes | hops</th>
-<th title="output gain of the best aggregated route over the best single alternative; 1 bp = 0.01%">improvement bps</th>
-<th title="share of returned routes carrying a maxAmountInUsd liquidity bound; n/a for on-chain DEX rows">capacity coverage</th>
-<th title="which bridges (or DEX venues on stellar rows) supplied routes across the run">bridge | venue distribution</th>
-<th title="direct vs composite bridge routes; single / multi-hop, +split on stellar rows">route types</th>
+<th title="how much more the best aggregated route delivers vs the best single alternative in the same response; 1 bp = 0.01%">aggregation gain, bps</th>
+<th title="share of routes that arrived with a max-amount depth badge (maxAmountInUsd); n/a for on-chain DEX rows">capacity badge coverage</th>
+<th title="which bridges (or Stellar DEX venues) supplied routes across the run; a route split across pools counts once per pool">liquidity sources</th>
+<th title="direct = the bridge carries the transfer itself; single-pool / multi-hop (+split when one hop spans several pools) on DEX-router rows">route types</th>
 </tr>
 ${rows}
 </table>
@@ -218,18 +226,19 @@ mode. Latency is end-to-end HTTP. Raw samples for every run live in report/histo
 <p>Reading the latency columns: p50 is the median - half of the quotes in the run answered at least this fast.
 p95 is the tail: 19 of 20 quotes were faster; with the default 5 repetitions per row, p95 is simply the slowest
 observed quote of the run.</p>
-<p>Bridge rows: fast is the UI's instant first pass (Near only) and full runs every bridge in parallel, so
-full's latency is its slowest parallel answer - fast exists to show a price immediately, not to beat full on
-latency. Improvement bps compares the best aggregated route with the best single alternative in the same
+<p>Bridge rows: "instant" is the UI's first price (Near only); "all bridges" quotes every bridge in parallel,
+so its latency is the slowest parallel answer - instant exists to show a price immediately, not to win on
+latency. Aggregation gain compares the best aggregated route with the best single alternative in the same
 response (0 when only one bridge quotes the pair); more competing bridges usually shrinks this number, which is
-aggregation working, not failing. Route types count returned routes per run: direct means the bridge carries the
-transfer itself, composite (bridge+wowmax) appears once composite execution ships in the client.</p>
-<p>Capacity coverage is the share of returned routes carrying a maxAmountInUsd liquidity bound. Allbridge
-exposes pool depth directly; Near and Squid publish no limits, so their bound comes from WOWMAX's asynchronous
-capacity probe - coverage below 100% means the probe cache had not warmed for that route yet, not a routing
-defect. One unmeasured warm-up quote precedes each pair's samples so connection setup never lands in the
-columns.</p>
-<p>Stellar rows measure the production adapter route the web app calls (/chains/100000148/quote, answered from
+aggregation working, not failing. Route types count returned routes per run: "direct" means the bridge carries
+the transfer itself; composite routes (bridge + a WOWMAX Stellar swap) will appear here once composite execution
+ships in the client. Liquidity-source counts are per fill: a route split across pools contributes one per pool.</p>
+<p>Capacity badge coverage is the share of routes that arrived with a max-amount depth badge (maxAmountInUsd -
+the figure the UI shows as a route's capacity). Allbridge exposes pool depth directly; Near and Squid publish no
+limits, so their badge comes from WOWMAX's own asynchronous capacity probe - coverage below 100% means the probe
+cache had not warmed for that route yet, not a routing defect. One unmeasured warm-up quote precedes each pair's
+samples so connection setup never lands in the columns.</p>
+<p>DEX-router rows measure the production adapter route the web app calls (/chains/100000148/quote, answered from
 the router's warm graph snapshot): hops, venue distribution (SDEX / AMMs) and route type - single or multi-hop,
 "+split" when a hop is split across pools - come from the returned route. Improvement there is the router's own
 "vs best single pool" figure, taken from one probe per pair of the rich documented /quote endpoint; by the D1
