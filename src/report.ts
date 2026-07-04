@@ -143,7 +143,18 @@ th{background:#f2f5fb} tr:nth-child(even){background:#fafbfe}
 <h1>WOWMAX Aggregation Benchmarks</h1>
 <div class="meta">generated ${esc(report.generatedAt)} &middot; commit ${esc(report.gitSha ?? "n/a")} &middot; quotes ${report.totals.ok}/${report.totals.quotes} OK</div>
 <table>
-<tr><th>pair</th><th>mode</th><th>ok</th><th>p50 ms</th><th>p95 ms</th><th>routes | hops</th><th>improvement bps</th><th>capacity coverage</th><th>bridge | venue distribution</th><th>route types</th></tr>
+<tr>
+<th title="source -> destination (chain-token pairs on bridge rows, DEX pair on stellar rows)">pair</th>
+<th title="fast = Near-only instant pass; full = all bridges; stellar = DEX router, production adapter route">mode</th>
+<th title="successful quotes / attempts in this run">ok</th>
+<th title="median end-to-end HTTP latency: half of the quotes in the run answered at least this fast">p50 ms</th>
+<th title="tail latency: 19 of 20 quotes were faster (on 5 samples per row this is simply the slowest observed quote)">p95 ms</th>
+<th title="bridge rows: routes returned per quote; stellar rows: hops in the winning route">routes | hops</th>
+<th title="output gain of the best aggregated route over the best single alternative; 1 bp = 0.01%">improvement bps</th>
+<th title="share of returned routes carrying a maxAmountInUsd liquidity bound; n/a for on-chain DEX rows">capacity coverage</th>
+<th title="which bridges (or DEX venues on stellar rows) supplied routes across the run">bridge | venue distribution</th>
+<th title="direct vs composite bridge routes; single / multi-hop, +split on stellar rows">route types</th>
+</tr>
 ${rows}
 </table>
 <div class="note">
@@ -154,7 +165,9 @@ router's warm graph snapshot): hops, venue distribution (SDEX / AMMs) and route 
 "vs best single pool" figure, taken from one probe per pair of the rich documented /quote endpoint; by the D1
 contract that endpoint rebuilds the graph with live reserves on every request, so its latency is deliberately
 excluded from the latency columns. Capacity coverage does not apply to on-chain DEX routes and is shown as n/a.
-Latency is end-to-end HTTP. Improvement bps compares the best aggregated route with the best single alternative
+Latency is end-to-end HTTP; p50 is the median - half of the quotes in the run answered at least this fast - and
+p95 is the tail: 19 of 20 quotes were faster (with the default 5 repetitions per row, p95 is simply the slowest
+observed quote of the run). Improvement bps compares the best aggregated route with the best single alternative
 in the same response (0 when only one bridge quotes the pair). Capacity coverage is the share of returned routes
 carrying a maxAmountInUsd liquidity bound. Raw samples for every run live in report/history/.
 </div>

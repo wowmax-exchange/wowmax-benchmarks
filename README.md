@@ -55,5 +55,8 @@ measuring it would count design as failure.
 
 `report/latest.json` is the machine-readable summary, `report/index.html` the
 human one; every raw run is archived under `report/history/`. Latency is
-end-to-end HTTP. "Improvement bps" is 0 when only one bridge quotes a pair -
+end-to-end HTTP: "p50" is the median - half of the quotes in the run answered
+at least this fast; "p95" is the tail - 19 of 20 quotes were faster, and with
+the default 5 repetitions per row it is simply the slowest observed quote.
+"Improvement bps" is 0 when only one bridge quotes a pair -
 the honest reading is "aggregation premium over the runner-up", not marketing.

@@ -84,6 +84,13 @@ describe("renderHtml", () => {
     expect(html).toContain("direct:6");
     expect(html.toLowerCase()).not.toContain("<script");
   });
+  it("explains the latency percentiles in plain words and annotates the headers", () => {
+    const html = renderHtml(summarize(samples, null));
+    expect(html).toContain("p50 is the median");
+    expect(html).toContain("19 of 20 quotes were faster");
+    expect(html).toContain('title="median end-to-end HTTP latency');
+    expect(html).toContain('title="tail latency');
+  });
   it("renders stellar capacity as explicit n/a, not a bare dash", () => {
     const stellarOnly: QuoteSample[] = [
       {
