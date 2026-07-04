@@ -70,5 +70,21 @@
     "seconds": 209,
     "date": "2026-07-02",
     "note": null
+  },
+  {
+    "bridge": "near-intents",
+    "pair": "stellar-usdc->bsc-usdc",
+    "amountUsd": 160,
+    "seconds": 320,
+    "date": "2026-07-01",
+    "note": null
+  },
+  {
+    "bridge": "near-intents",
+    "pair": "bsc-usdc->stellar-usdc",
+    "amountUsd": 6,
+    "seconds": 153,
+    "date": "2026-07-02",
+    "note": null
   }
 ]
