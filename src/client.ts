@@ -65,10 +65,19 @@ export function bridgeQuote(pair: BridgePair, fast: boolean): Promise<TimedRespo
 
 // --- Stellar DEX router ---
 
+export interface StellarRouteFill {
+  venue?: string;
+}
 export interface StellarQuote {
-  amountOut?: string;
-  path?: unknown[];
-  hops?: number;
+  wowmax?: {
+    error?: string;
+    amountOut?: string;
+    hops?: number;
+    pools?: number;
+    routeType?: string;
+    path?: { fills?: StellarRouteFill[] }[];
+  };
+  wowmax_advantage?: { vs_best_single_pool_bps?: number | string };
   [k: string]: unknown;
 }
 

@@ -36,14 +36,30 @@ async function collectLive(): Promise<QuoteSample[]> {
   for (const pair of STELLAR_PAIRS) {
     for (let i = 0; i < BENCH_REPS; i++) {
       const r = await stellarQuote(pair);
+      const w = r.body?.wowmax;
+      const advRaw = r.body?.wowmax_advantage?.vs_best_single_pool_bps;
+      const stellar =
+        r.status === 200 && w && !w.error
+          ? {
+              hops: Number(w.hops ?? 0),
+              routeType: String(w.routeType ?? "unknown"),
+              venues: (w.path ?? [])
+                .flatMap((g) => g.fills ?? [])
+                .reduce<Record<string, number>>((m, f) => {
+                  const v = String(f.venue ?? "unknown");
+                  m[v] = (m[v] ?? 0) + 1;
+                  return m;
+                }, {}),
+              advantageBps: typeof advRaw === "number" ? advRaw : null,
+            }
+          : null;
       samples.push({
         pair: pair.name,
         mode: "stellar",
         ms: r.ms,
         status: r.status,
-        // The DEX router returns a path, not bridge routes; latency and
-        // success-rate are the benchmark here.
         routes: null,
+        stellar,
       });
       await pause(300);
     }

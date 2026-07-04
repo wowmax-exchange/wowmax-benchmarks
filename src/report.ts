@@ -1,12 +1,21 @@
 import { percentile, mean, round1, improvementBps } from "./stats.js";
 import type { RouteRow } from "./client.js";
 
+export interface StellarSampleStats {
+  hops: number;
+  routeType: string;
+  venues: Record<string, number>;
+  advantageBps: number | null;
+}
+
 export interface QuoteSample {
   pair: string;
   mode: "fast" | "full" | "stellar";
   ms: number;
   status: number;
   routes: RouteRow[] | null;
+  /** DEX-router samples carry their own native metrics instead of bridge routes. */
+  stellar?: StellarSampleStats | null;
 }
 
 export interface PairSummary {
@@ -44,6 +53,18 @@ export function summarize(samples: QuoteSample[], gitSha: string | null): BenchR
     let withCap = 0;
     let totalRoutes = 0;
     for (const s of ok) {
+      if (s.stellar) {
+        // DEX-router semantics: hops instead of route count, venue
+        // distribution instead of bridges, route type from the router,
+        // improvement vs the best single pool (the router's own metric).
+        routeCounts.push(s.stellar.hops);
+        kinds[s.stellar.routeType] = (kinds[s.stellar.routeType] ?? 0) + 1;
+        for (const [v, n] of Object.entries(s.stellar.venues)) {
+          bridges[v] = (bridges[v] ?? 0) + n;
+        }
+        if (s.stellar.advantageBps !== null) improvements.push(s.stellar.advantageBps);
+        continue;
+      }
       const routes = s.routes ?? [];
       routeCounts.push(routes.length);
       for (const r of routes) {
@@ -117,11 +138,13 @@ th{background:#f2f5fb} tr:nth-child(even){background:#fafbfe}
 <h1>WOWMAX Aggregation Benchmarks</h1>
 <div class="meta">generated ${esc(report.generatedAt)} &middot; commit ${esc(report.gitSha ?? "n/a")} &middot; quotes ${report.totals.ok}/${report.totals.quotes} OK</div>
 <table>
-<tr><th>pair</th><th>mode</th><th>ok</th><th>p50 ms</th><th>p95 ms</th><th>routes/quote</th><th>improvement bps</th><th>capacity coverage</th><th>bridge distribution</th><th>route types</th></tr>
+<tr><th>pair</th><th>mode</th><th>ok</th><th>p50 ms</th><th>p95 ms</th><th>routes | hops</th><th>improvement bps</th><th>capacity coverage</th><th>bridge | venue distribution</th><th>route types</th></tr>
 ${rows}
 </table>
 <div class="note">
 Method: black-box dry quotes against public production endpoints, ${"BENCH_REPS"} repetitions per pair per mode.
+Stellar rows are the DEX router: hops per quote, venue distribution (SDEX / AMMs) and route type come from the
+router's path; improvement there is the router's own "vs best single pool" figure - the routing-quality metric.
 Latency is end-to-end HTTP. Improvement bps compares the best aggregated route with the best single alternative
 in the same response (0 when only one bridge quotes the pair). Capacity coverage is the share of returned routes
 carrying a maxAmountInUsd liquidity bound. Raw samples for every run live in report/history/.
