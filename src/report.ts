@@ -218,9 +218,17 @@ mode. Latency is end-to-end HTTP. Raw samples for every run live in report/histo
 <p>Reading the latency columns: p50 is the median - half of the quotes in the run answered at least this fast.
 p95 is the tail: 19 of 20 quotes were faster; with the default 5 repetitions per row, p95 is simply the slowest
 observed quote of the run.</p>
-<p>Bridge rows: improvement bps compares the best aggregated route with the best single alternative in the same
-response (0 when only one bridge quotes the pair). Capacity coverage is the share of returned routes carrying a
-maxAmountInUsd liquidity bound.</p>
+<p>Bridge rows: fast is the UI's instant first pass (Near only) and full runs every bridge in parallel, so
+full's latency is its slowest parallel answer - fast exists to show a price immediately, not to beat full on
+latency. Improvement bps compares the best aggregated route with the best single alternative in the same
+response (0 when only one bridge quotes the pair); more competing bridges usually shrinks this number, which is
+aggregation working, not failing. Route types count returned routes per run: direct means the bridge carries the
+transfer itself, composite (bridge+wowmax) appears once composite execution ships in the client.</p>
+<p>Capacity coverage is the share of returned routes carrying a maxAmountInUsd liquidity bound. Allbridge
+exposes pool depth directly; Near and Squid publish no limits, so their bound comes from WOWMAX's asynchronous
+capacity probe - coverage below 100% means the probe cache had not warmed for that route yet, not a routing
+defect. One unmeasured warm-up quote precedes each pair's samples so connection setup never lands in the
+columns.</p>
 <p>Stellar rows measure the production adapter route the web app calls (/chains/100000148/quote, answered from
 the router's warm graph snapshot): hops, venue distribution (SDEX / AMMs) and route type - single or multi-hop,
 "+split" when a hop is split across pools - come from the returned route. Improvement there is the router's own

@@ -20,6 +20,12 @@ function gitSha(): string | null {
 async function collectLive(): Promise<QuoteSample[]> {
   const samples: QuoteSample[] = [];
   for (const pair of BRIDGE_PAIRS) {
+    // One UNMEASURED warm-up quote per pair: the first request otherwise pays
+    // TLS + connection setup to the gateway, and since fast rows are sampled
+    // first, that cold cost used to land in fast and make it look slower
+    // than full. The columns claim steady-state latency - deliver that.
+    await bridgeQuote(pair, false);
+    await pause(400);
     for (const fast of pair.fastCapable ? [true, false] : [false]) {
       for (let i = 0; i < BENCH_REPS; i++) {
         const r = await bridgeQuote(pair, fast);
@@ -48,6 +54,10 @@ async function collectLive(): Promise<QuoteSample[]> {
     await pause(300);
     // Latency and route shape come from the production adapter path the web
     // app actually calls - answered from the router's warm graph snapshot.
+    // Same warm-up rule as bridge pairs: one unmeasured call absorbs
+    // connection setup so it never inflates p95.
+    await stellarQuote(pair);
+    await pause(300);
     for (let i = 0; i < BENCH_REPS; i++) {
       const r = await stellarQuote(pair);
       const summary =
