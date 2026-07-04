@@ -29,5 +29,14 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: report
+      # Pages rollout occasionally flaps with a transient "Deployment failed,
+      # try again later" (seen on runs #2/#4). One in-workflow retry after a
+      # cool-down absorbs it so nightly never needs a human.
       - id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+      - if: steps.deployment.outcome == 'failure'
+        run: sleep 90
+      - id: deployment_retry
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
