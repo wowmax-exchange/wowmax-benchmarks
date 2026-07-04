@@ -41,6 +41,41 @@ describe("summarize", () => {
   });
 });
 
+describe("summarize (stellar DEX-router rows)", () => {
+  const stellarSamples: QuoteSample[] = [
+    {
+      pair: "xlm->usdc",
+      mode: "stellar",
+      ms: 9000,
+      status: 200,
+      routes: null,
+      stellar: { hops: 1, routeType: "single", venues: { sdex: 1 }, advantageBps: 12.4 },
+    },
+    {
+      pair: "xlm->usdc",
+      mode: "stellar",
+      ms: 11000,
+      status: 200,
+      routes: null,
+      stellar: { hops: 2, routeType: "multi-hop", venues: { sdex: 2 }, advantageBps: 20.6 },
+    },
+  ];
+  const rep = summarize(stellarSamples, null);
+  const p = rep.pairs.find((x) => x.pair === "xlm->usdc" && x.mode === "stellar")!;
+
+  it("maps the router's own advantage metric into the improvement column", () => {
+    expect(p.improvementBps).toBe(16.5);
+  });
+  it("hops feed the routes column, venues feed the distribution column", () => {
+    expect(p.meanRoutes).toBe(1.5);
+    expect(p.bridges).toEqual({ sdex: 3 });
+    expect(p.kinds).toEqual({ single: 1, "multi-hop": 1 });
+  });
+  it("keeps capacity coverage null - no maxAmountInUsd concept on-chain", () => {
+    expect(p.capacityCoverage).toBeNull();
+  });
+});
+
 describe("renderHtml", () => {
   it("produces a self-contained document with the data row", () => {
     const html = renderHtml(summarize(samples, null));
@@ -48,5 +83,21 @@ describe("renderHtml", () => {
     expect(html).toContain("squid:2");
     expect(html).toContain("direct:6");
     expect(html.toLowerCase()).not.toContain("<script");
+  });
+  it("renders stellar capacity as explicit n/a, not a bare dash", () => {
+    const stellarOnly: QuoteSample[] = [
+      {
+        pair: "xlm->usdc",
+        mode: "stellar",
+        ms: 9000,
+        status: 200,
+        routes: null,
+        stellar: { hops: 1, routeType: "single", venues: { sdex: 1 }, advantageBps: 12.4 },
+      },
+    ];
+    const html = renderHtml(summarize(stellarOnly, null));
+    expect(html).toContain("<td>n/a</td>");
+    expect(html).toContain("sdex:1");
+    expect(html).toContain("<td>12.4</td>");
   });
 });

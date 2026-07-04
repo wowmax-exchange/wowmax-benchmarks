@@ -30,3 +30,16 @@ export function improvementBps(outputs: number[]): number | null {
   if (second <= 0) return null;
   return ((best - second) / second) * 10_000;
 }
+
+// Numeric coercion for API fields that may arrive as a number or as a numeric
+// string (the stellar router serializes its "vs best single pool" advantage
+// as a string). Anything non-finite or non-numeric maps to null - callers
+// treat null as "metric absent", never as zero.
+export function toFiniteNumber(v: unknown): number | null {
+  if (typeof v === "number") return Number.isFinite(v) ? v : null;
+  if (typeof v === "string" && v.trim() !== "") {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
+  }
+  return null;
+}

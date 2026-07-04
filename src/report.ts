@@ -113,13 +113,18 @@ export function renderHtml(report: BenchReport): string {
       const kinds = Object.entries(p.kinds)
         .map(([k, n]) => `${esc(k)}:${n}`)
         .join(" ");
+      // Capacity bounds are a bridge-aggregator concept (maxAmountInUsd per
+      // route); on-chain DEX rows have no such notion, so render an explicit
+      // n/a there instead of a dash that reads as missing data.
+      const capacity =
+        p.mode === "stellar" ? "n/a" : p.capacityCoverage === null ? "-" : p.capacityCoverage + "%";
       return `<tr>
 <td>${esc(p.pair)}</td><td>${esc(p.mode)}</td>
 <td>${p.ok}/${p.samples}</td>
 <td>${p.p50ms ?? "-"}</td><td>${p.p95ms ?? "-"}</td>
 <td>${p.meanRoutes ?? "-"}</td>
 <td>${p.improvementBps ?? "-"}</td>
-<td>${p.capacityCoverage === null ? "-" : p.capacityCoverage + "%"}</td>
+<td>${capacity}</td>
 <td>${bridges || "-"}</td><td>${kinds || "-"}</td>
 </tr>`;
     })
@@ -145,6 +150,7 @@ ${rows}
 Method: black-box dry quotes against public production endpoints, ${"BENCH_REPS"} repetitions per pair per mode.
 Stellar rows are the DEX router: hops per quote, venue distribution (SDEX / AMMs) and route type come from the
 router's path; improvement there is the router's own "vs best single pool" figure - the routing-quality metric.
+Capacity coverage does not apply to on-chain DEX routes and is shown as n/a on stellar rows.
 Latency is end-to-end HTTP. Improvement bps compares the best aggregated route with the best single alternative
 in the same response (0 when only one bridge quotes the pair). Capacity coverage is the share of returned routes
 carrying a maxAmountInUsd liquidity bound. Raw samples for every run live in report/history/.
