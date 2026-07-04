@@ -212,7 +212,7 @@ h2{font-size:1.05rem;margin-top:1.8rem}
 <th title="successful quotes / attempts in this run">ok</th>
 <th title="median end-to-end HTTP latency: half of the quotes in the run answered at least this fast">p50 ms</th>
 <th title="tail latency: 19 of 20 quotes were faster (on 5 samples per row this is simply the slowest observed quote)">p95 ms</th>
-<th title="bridge rows: routes returned per quote; stellar rows: hops in the winning route">routes | hops</th>
+<th title="bridge rows: routes returned per quote; DEX-router rows: hops in the winning route">routes | hops</th>
 <th title="how much more the best aggregated route delivers vs the best single alternative in the same response; 1 bp = 0.01%">aggregation gain, bps</th>
 <th title="share of routes that arrived with a max-amount depth badge (maxAmountInUsd); n/a for on-chain DEX rows">capacity badge coverage</th>
 <th title="which bridges (or Stellar DEX venues) supplied routes across the run; a route split across pools counts once per pool">liquidity sources</th>
@@ -239,11 +239,12 @@ limits, so their badge comes from WOWMAX's own asynchronous capacity probe - cov
 cache had not warmed for that route yet, not a routing defect. One unmeasured warm-up quote precedes each pair's
 samples so connection setup never lands in the columns.</p>
 <p>DEX-router rows measure the production adapter route the web app calls (/chains/100000148/quote, answered from
-the router's warm graph snapshot): hops, venue distribution (SDEX / AMMs) and route type - single or multi-hop,
-"+split" when a hop is split across pools - come from the returned route. Improvement there is the router's own
+the router's warm graph snapshot): hops, venue distribution (SDEX / AMMs) and route type - single-pool or multi-hop,
+"+split" when a hop is split across pools - come from the returned route. The gain figure there is the router's own
 "vs best single pool" figure, taken from one probe per pair of the rich documented /quote endpoint; by the D1
 contract that endpoint rebuilds the graph with live reserves on every request, so its latency is deliberately
-excluded from the latency columns. Capacity coverage does not apply to on-chain DEX routes and is shown as n/a.</p>
+excluded from the latency columns. Capacity badge coverage does not apply to on-chain DEX routes and is shown
+as n/a.</p>
 </div>
 ${transferSection}
 </body></html>`;
