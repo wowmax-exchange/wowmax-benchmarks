@@ -5,7 +5,7 @@
 
 Public, black-box test suite and nightly performance benchmarks for the
 WOWMAX aggregation stack: the Stellar DEX router and the multi-bridge
-aggregator (Allbridge, Squid/Coral over Axelar GMP, Near Intents).
+aggregator (Allbridge, Squid Coral V2 RFQ, Near Intents).
 
 **Live report:** published to GitHub Pages by the nightly `bench` workflow.
 

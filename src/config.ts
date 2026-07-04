@@ -39,11 +39,11 @@ export interface BridgePair {
    * The fast pass is Near-only by design; on pairs Near does not quote it
    * 404s BY DESIGN and the UI transparently falls back to the full pass.
    * Benchmarking fast where it cannot apply measures nothing - skip it.
-   * Near quotes stellar-DESTINATION USDC pairs only for a recipient that
-   * exists and holds the USDC trustline (the placeholder above satisfies
-   * this). The stellar-ORIGIN pair stays full-pass-only until Near
-   * demonstrably quotes it live (1Click answered an opaque 400 for the
-   * previous synthetic sender); flip its fastCapable after a CLI check.
+   * Near quotes stellar-USDC pairs in BOTH directions for a real activated
+   * account with the USDC trustline: 1Click validates the recipient on
+   * stellar-destination and the refund address on stellar-origin (both
+   * confirmed live via the aggregator CLI, 2026-07-04) - hence every pair
+   * below is fastCapable.
    */
   fastCapable: boolean;
 }
@@ -93,7 +93,7 @@ export const BRIDGE_PAIRS: BridgePair[] = [
     amount: "50",
     sender: STELLAR_ADDR,
     recipient: EVM_ADDR,
-    fastCapable: false,
+    fastCapable: true,
   },
 ];
 
@@ -110,5 +110,5 @@ export const STELLAR_PAIRS: StellarPair[] = [
 ];
 
 // Repetitions per pair per benchmark run. p95 needs samples; production needs
-// mercy. 5 x (4 full + 3 fast bridge rows) + 5 x 2 stellar pairs = 45 quotes/run.
+// mercy. 5 x (4 full + 4 fast bridge rows) + 5 x 2 stellar pairs = 50 quotes/run.
 export const BENCH_REPS = Number(process.env.BENCH_REPS ?? 5);
