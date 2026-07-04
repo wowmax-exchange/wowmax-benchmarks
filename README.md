@@ -1,5 +1,8 @@
 # WOWMAX Benchmarks
 
+[![ci](https://github.com/wowswap-io/wowmax-benchmarks/actions/workflows/ci.yml/badge.svg)](https://github.com/wowswap-io/wowmax-benchmarks/actions/workflows/ci.yml)
+[![bench](https://github.com/wowswap-io/wowmax-benchmarks/actions/workflows/bench.yml/badge.svg)](https://github.com/wowswap-io/wowmax-benchmarks/actions/workflows/bench.yml)
+
 Public, black-box test suite and nightly performance benchmarks for the
 WOWMAX aggregation stack: the Stellar DEX router and the multi-bridge
 aggregator (Allbridge, Squid/Coral over Axelar GMP, Near Intents).
@@ -11,9 +14,16 @@ aggregator (Allbridge, Squid/Coral over Axelar GMP, Near Intents).
 - End-to-end scenarios that exercise the **same public HTTP surface the web
   app uses** - dry quotes only, nothing is signed or broadcast.
 - A benchmark runner measuring, per pair and mode:
-  - **quote latency** (p50 / p95, fast vs full aggregation pass);
+  - **quote latency** (p50 / p95; bridge pairs in the fast vs full
+    aggregation pass, stellar pairs on the production adapter route the web
+    app calls - `/chains/100000148/quote`, answered from the router's warm
+    graph snapshot);
   - **route quality improvement** - best aggregated route vs the best single
-    alternative, in bps;
+    alternative, in bps; on stellar rows this is the router's own "vs best
+    single pool" figure from one probe per pair of the rich documented
+    `/quote` endpoint, which by the D1 contract rebuilds the graph with live
+    reserves per request - deliberately slow, so its latency never enters the
+    latency columns;
   - **bridge distribution** and **route types** (direct vs composite);
   - **liquidity-bound coverage** - the share of routes carrying a
     `maxAmountInUsd` capacity estimate.

@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync, readFileSync, rmSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { BRIDGE_PAIRS, STELLAR_PAIRS, BENCH_REPS } from "../src/config.js";
-import { bridgeQuote, stellarQuote } from "../src/client.js";
+import { bridgeQuote, stellarQuote, stellarRichQuote, adapterRouteSummary } from "../src/client.js";
 import { summarize, renderHtml, QuoteSample } from "../src/report.js";
 import { toFiniteNumber } from "../src/stats.js";
 
@@ -35,35 +35,30 @@ async function collectLive(): Promise<QuoteSample[]> {
     }
   }
   for (const pair of STELLAR_PAIRS) {
+    // One rich /quote probe per pair: the documented D1 endpoint reports the
+    // router's own routing-quality figure (vs best single pool). It is slow
+    // by contract - live reserves, full graph rebuild per request - so it is
+    // instrumentation only: its latency never enters the latency columns.
+    // The figure arrives as a numeric string; coerce, never type-gate.
+    const probe = await stellarRichQuote(pair);
+    const probeAdv =
+      probe.status === 200 && !probe.body?.wowmax?.error
+        ? toFiniteNumber(probe.body?.wowmax_advantage?.vs_best_single_pool_bps)
+        : null;
+    await pause(300);
+    // Latency and route shape come from the production adapter path the web
+    // app actually calls - answered from the router's warm graph snapshot.
     for (let i = 0; i < BENCH_REPS; i++) {
       const r = await stellarQuote(pair);
-      const w = r.body?.wowmax;
-      // The router serializes this figure as a numeric string; coerce instead
-      // of type-gating, otherwise the improvement column of stellar rows is
-      // permanently empty (that was exactly the bug in reports before this).
-      const advRaw = r.body?.wowmax_advantage?.vs_best_single_pool_bps;
-      const stellar =
-        r.status === 200 && w && !w.error
-          ? {
-              hops: Number(w.hops ?? 0),
-              routeType: String(w.routeType ?? "unknown"),
-              venues: (w.path ?? [])
-                .flatMap((g) => g.fills ?? [])
-                .reduce<Record<string, number>>((m, f) => {
-                  const v = String(f.venue ?? "unknown");
-                  m[v] = (m[v] ?? 0) + 1;
-                  return m;
-                }, {}),
-              advantageBps: toFiniteNumber(advRaw),
-            }
-          : null;
+      const summary =
+        r.status === 200 && !r.body?.error ? adapterRouteSummary(r.body?.routes) : null;
       samples.push({
         pair: pair.name,
         mode: "stellar",
         ms: r.ms,
         status: r.status,
         routes: null,
-        stellar,
+        stellar: summary ? { ...summary, advantageBps: i === 0 ? probeAdv : null } : null,
       });
       await pause(300);
     }
@@ -82,19 +77,32 @@ function collectFixture(): QuoteSample[] {
     { pair: "fixture", mode: "fast", ms: 610, status: 200, routes: routes.slice(0, 1) },
     // Synthetic DEX-router sample so the offline pipeline also exercises
     // stellar-row aggregation and rendering. The advantage figure goes through
-    // the same string coercion production responses need.
+    // the same string coercion production responses need, and the route shape
+    // through the same adapter-dialect derivation.
     {
       pair: "fixture-stellar",
       mode: "stellar",
-      ms: 9500,
+      ms: 480,
       status: 200,
       routes: null,
-      stellar: {
-        hops: 1,
-        routeType: "single",
-        venues: { sdex: 1 },
-        advantageBps: toFiniteNumber("12.4"),
-      },
+      stellar: (() => {
+        const summary = adapterRouteSummary([
+          {
+            parts: 10000,
+            from: "native",
+            swaps: [
+              { to: "eurc:issuer", part: 404, market: { id: "CB1", name: "phoenix" } },
+              { to: "eurc:issuer", part: 9596, market: { id: "CA2", name: "soroswap" } },
+            ],
+          },
+          {
+            parts: 10000,
+            from: "eurc:issuer",
+            swaps: [{ to: "usdc:issuer", part: 10000, market: { id: "CD3", name: "aqua" } }],
+          },
+        ]);
+        return summary ? { ...summary, advantageBps: toFiniteNumber("12.4") } : null;
+      })(),
     },
   ];
 }

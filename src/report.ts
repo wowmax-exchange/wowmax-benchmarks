@@ -148,9 +148,12 @@ ${rows}
 </table>
 <div class="note">
 Method: black-box dry quotes against public production endpoints, ${"BENCH_REPS"} repetitions per pair per mode.
-Stellar rows are the DEX router: hops per quote, venue distribution (SDEX / AMMs) and route type come from the
-router's path; improvement there is the router's own "vs best single pool" figure - the routing-quality metric.
-Capacity coverage does not apply to on-chain DEX routes and is shown as n/a on stellar rows.
+Stellar rows measure the production adapter route the web app calls (/chains/100000148/quote, answered from the
+router's warm graph snapshot): hops, venue distribution (SDEX / AMMs) and route type - single or multi-hop,
+"+split" when a hop is split across pools - come from the returned route. Improvement there is the router's own
+"vs best single pool" figure, taken from one probe per pair of the rich documented /quote endpoint; by the D1
+contract that endpoint rebuilds the graph with live reserves on every request, so its latency is deliberately
+excluded from the latency columns. Capacity coverage does not apply to on-chain DEX routes and is shown as n/a.
 Latency is end-to-end HTTP. Improvement bps compares the best aggregated route with the best single alternative
 in the same response (0 when only one bridge quotes the pair). Capacity coverage is the share of returned routes
 carrying a maxAmountInUsd liquidity bound. Raw samples for every run live in report/history/.

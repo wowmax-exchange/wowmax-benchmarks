@@ -63,25 +63,85 @@ export function bridgeQuote(pair: BridgePair, fast: boolean): Promise<TimedRespo
   });
 }
 
-// --- Stellar DEX router ---
+// --- Stellar DEX router: the production adapter route the web app calls ---
+// (SwapStore quotes `${STELLAR_ROUTER_URL}/chains/${chainId}/quote`; answers
+// come from the router's warm graph snapshot, which is why this path is
+// sub-second while the rich /quote below deliberately is not.)
 
-export interface StellarRouteFill {
-  venue?: string;
+export const STELLAR_CHAIN_ID = "100000148";
+
+export interface StellarAdapterSwap {
+  to?: string;
+  part?: number;
+  market?: { id?: string; name?: string };
 }
-export interface StellarQuote {
-  wowmax?: {
-    error?: string;
-    amountOut?: string;
-    hops?: number;
-    pools?: number;
-    routeType?: string;
-    path?: { fills?: StellarRouteFill[] }[];
-  };
+
+export interface StellarAdapterRouteGroup {
+  parts?: number;
+  from?: string;
+  swaps?: StellarAdapterSwap[];
+}
+
+export interface StellarAdapterQuote {
+  amountIn?: string;
+  amountOut?: string;
+  routes?: StellarAdapterRouteGroup[];
+  meta?: { mode?: string; network?: string };
+  error?: string;
+  [k: string]: unknown;
+}
+
+export interface StellarRouteSummary {
+  hops: number;
+  routeType: string;
+  venues: Record<string, number>;
+}
+
+// Pure derivation from the adapter dialect, exported so unit tests can pin it
+// to captured production responses. Null when there is no route - callers
+// treat that as "no metrics", never as a zero-hop route.
+export function adapterRouteSummary(
+  routes: StellarAdapterRouteGroup[] | null | undefined,
+): StellarRouteSummary | null {
+  if (!routes || routes.length === 0) return null;
+  const venues: Record<string, number> = {};
+  let split = false;
+  for (const group of routes) {
+    const swaps = group.swaps ?? [];
+    if (swaps.length > 1) split = true;
+    for (const sw of swaps) {
+      const v = String(sw.market?.name ?? "unknown");
+      venues[v] = (venues[v] ?? 0) + 1;
+    }
+  }
+  const routeType = (routes.length > 1 ? "multi-hop" : "single") + (split ? "+split" : "");
+  return { hops: routes.length, routeType, venues };
+}
+
+export function stellarQuote(pair: StellarPair): Promise<TimedResponse<StellarAdapterQuote>> {
+  const q = new URLSearchParams({
+    from: pair.from,
+    to: pair.to,
+    amount: pair.amount,
+    network: "mainnet",
+  });
+  return timedFetch<StellarAdapterQuote>(
+    `${STELLAR_ROUTER}/chains/${STELLAR_CHAIN_ID}/quote?${q.toString()}`,
+  );
+}
+
+// --- Rich documented D1 endpoint. Kept as a once-per-pair quality probe: it
+// reports the router's own "vs best single pool" advantage, and by the D1
+// contract it rebuilds the graph with live reserves on every request - slow
+// on purpose, so its latency never enters the benchmark latency columns. ---
+
+export interface StellarRichQuote {
+  wowmax?: { error?: string };
   wowmax_advantage?: { vs_best_single_pool_bps?: number | string };
   [k: string]: unknown;
 }
 
-export function stellarQuote(pair: StellarPair): Promise<TimedResponse<StellarQuote>> {
+export function stellarRichQuote(pair: StellarPair): Promise<TimedResponse<StellarRichQuote>> {
   const q = new URLSearchParams({ from: pair.from, to: pair.to, amount: pair.amount });
-  return timedFetch<StellarQuote>(`${STELLAR_ROUTER}/quote?${q.toString()}`);
+  return timedFetch<StellarRichQuote>(`${STELLAR_ROUTER}/quote?${q.toString()}`);
 }
