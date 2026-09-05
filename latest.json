@@ -1,0 +1,274 @@
+{
+  "generatedAt": "2026-09-05T07:43:18.813Z",
+  "gitSha": "96e0dcd",
+  "totals": {
+    "quotes": 50,
+    "ok": 50
+  },
+  "pairs": [
+    {
+      "pair": "bsc-usdt->eth-usdt",
+      "mode": "fast",
+      "samples": 5,
+      "ok": 5,
+      "p50ms": 907.8,
+      "p95ms": 1470.7,
+      "meanRoutes": 1,
+      "improvementBps": 0,
+      "bridges": {
+        "near-intents": 5
+      },
+      "kinds": {
+        "direct": 5
+      },
+      "capacityCoverage": 20
+    },
+    {
+      "pair": "bsc-usdt->eth-usdt",
+      "mode": "full",
+      "samples": 5,
+      "ok": 5,
+      "p50ms": 1182.7,
+      "p95ms": 1265.6,
+      "meanRoutes": 2,
+      "improvementBps": 45.8,
+      "bridges": {
+        "near-intents": 5,
+        "squid": 5
+      },
+      "kinds": {
+        "direct": 10
+      },
+      "capacityCoverage": 100
+    },
+    {
+      "pair": "eth-usdt->stellar-usdc",
+      "mode": "fast",
+      "samples": 5,
+      "ok": 5,
+      "p50ms": 1180.2,
+      "p95ms": 1337.5,
+      "meanRoutes": 1,
+      "improvementBps": 0,
+      "bridges": {
+        "near-intents": 5
+      },
+      "kinds": {
+        "direct": 5
+      },
+      "capacityCoverage": 40
+    },
+    {
+      "pair": "eth-usdt->stellar-usdc",
+      "mode": "full",
+      "samples": 5,
+      "ok": 5,
+      "p50ms": 1230.3,
+      "p95ms": 1472.6,
+      "meanRoutes": 2,
+      "improvementBps": 4.6,
+      "bridges": {
+        "near-intents": 5,
+        "squid": 5
+      },
+      "kinds": {
+        "direct": 10
+      },
+      "capacityCoverage": 100
+    },
+    {
+      "pair": "bsc-usdt->stellar-usdc",
+      "mode": "fast",
+      "samples": 5,
+      "ok": 5,
+      "p50ms": 1193.9,
+      "p95ms": 1810.4,
+      "meanRoutes": 1,
+      "improvementBps": 0,
+      "bridges": {
+        "near-intents": 5
+      },
+      "kinds": {
+        "direct": 5
+      },
+      "capacityCoverage": 40
+    },
+    {
+      "pair": "bsc-usdt->stellar-usdc",
+      "mode": "full",
+      "samples": 5,
+      "ok": 5,
+      "p50ms": 1250.9,
+      "p95ms": 1291.5,
+      "meanRoutes": 2,
+      "improvementBps": 0.9,
+      "bridges": {
+        "squid": 5,
+        "near-intents": 5
+      },
+      "kinds": {
+        "direct": 10
+      },
+      "capacityCoverage": 100
+    },
+    {
+      "pair": "stellar-usdc->eth-usdt",
+      "mode": "fast",
+      "samples": 5,
+      "ok": 5,
+      "p50ms": 1053.9,
+      "p95ms": 1180.5,
+      "meanRoutes": 1,
+      "improvementBps": 0,
+      "bridges": {
+        "near-intents": 5
+      },
+      "kinds": {
+        "direct": 5
+      },
+      "capacityCoverage": 20
+    },
+    {
+      "pair": "stellar-usdc->eth-usdt",
+      "mode": "full",
+      "samples": 5,
+      "ok": 5,
+      "p50ms": 1028.7,
+      "p95ms": 1245.4,
+      "meanRoutes": 2,
+      "improvementBps": 50.3,
+      "bridges": {
+        "near-intents": 5,
+        "squid": 5
+      },
+      "kinds": {
+        "direct": 10
+      },
+      "capacityCoverage": 100
+    },
+    {
+      "pair": "xlm->usdc",
+      "mode": "stellar",
+      "samples": 5,
+      "ok": 5,
+      "p50ms": 457.4,
+      "p95ms": 463.7,
+      "meanRoutes": 3,
+      "improvementBps": 0,
+      "bridges": {
+        "sdex": 20
+      },
+      "kinds": {
+        "multi-hop+split": 5
+      },
+      "capacityCoverage": null
+    },
+    {
+      "pair": "usdc->xlm",
+      "mode": "stellar",
+      "samples": 5,
+      "ok": 5,
+      "p50ms": 443.7,
+      "p95ms": 465.8,
+      "meanRoutes": 2,
+      "improvementBps": 0,
+      "bridges": {
+        "sdex": 10
+      },
+      "kinds": {
+        "multi-hop": 5
+      },
+      "capacityCoverage": null
+    }
+  ],
+  "transferTimes": [
+    {
+      "bridge": "allbridge",
+      "pair": "eth-usdt->stellar-usdc",
+      "amountUsd": 100,
+      "seconds": 1047,
+      "date": "2026-07-03",
+      "note": null
+    },
+    {
+      "bridge": "allbridge",
+      "pair": "stellar-usdc->bsc-usdc",
+      "amountUsd": 23,
+      "seconds": 84,
+      "date": "2026-07-01",
+      "note": null
+    },
+    {
+      "bridge": "allbridge",
+      "pair": "eth-usdt->stellar-usdc",
+      "amountUsd": 150,
+      "seconds": 1035,
+      "date": "2026-07-03",
+      "note": null
+    },
+    {
+      "bridge": "squid",
+      "pair": "stellar-usdc->eth-usdt",
+      "amountUsd": 20,
+      "seconds": 10,
+      "date": "2026-07-01",
+      "note": null
+    },
+    {
+      "bridge": "squid",
+      "pair": "eth-usdc->stellar-usdc",
+      "amountUsd": 5,
+      "seconds": 74,
+      "date": "2026-07-02",
+      "note": null
+    },
+    {
+      "bridge": "squid",
+      "pair": "stellar-usdc->eth-usdc",
+      "amountUsd": 4,
+      "seconds": 10,
+      "date": "2026-07-02",
+      "note": null
+    },
+    {
+      "bridge": "squid",
+      "pair": "bsc-usdc->stellar-usdc",
+      "amountUsd": 4,
+      "seconds": 11,
+      "date": "2026-07-02",
+      "note": null
+    },
+    {
+      "bridge": "near-intents",
+      "pair": "stellar-usdc->eth-usdt",
+      "amountUsd": 980,
+      "seconds": 27,
+      "date": "2026-07-01",
+      "note": null
+    },
+    {
+      "bridge": "near-intents",
+      "pair": "eth-usdc->stellar-usdc",
+      "amountUsd": 3,
+      "seconds": 209,
+      "date": "2026-07-02",
+      "note": null
+    },
+    {
+      "bridge": "near-intents",
+      "pair": "stellar-usdc->bsc-usdc",
+      "amountUsd": 160,
+      "seconds": 320,
+      "date": "2026-07-01",
+      "note": null
+    },
+    {
+      "bridge": "near-intents",
+      "pair": "bsc-usdc->stellar-usdc",
+      "amountUsd": 6,
+      "seconds": 153,
+      "date": "2026-07-02",
+      "note": null
+    }
+  ]
+}

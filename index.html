@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WOWMAX Benchmarks</title>
+<style>
+body{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin:2rem;color:#1d2b3a;background:#fff}
+h1{font-size:1.4rem} .meta{color:#68738a;margin-bottom:1.2rem}
+table{border-collapse:collapse;width:100%;font-size:.85rem}
+th,td{border:1px solid #d8deea;padding:.45rem .6rem;text-align:left;white-space:nowrap}
+th{background:#f2f5fb} tr:nth-child(even){background:#fafbfe}
+.note{margin-top:1.2rem;color:#68738a;font-size:.85rem;max-width:70rem;white-space:normal}
+.note p{margin:.55rem 0}
+h2{font-size:1.05rem;margin-top:1.8rem}
+</style></head><body>
+<h1>WOWMAX Aggregation Benchmarks</h1>
+<div class="meta">generated 2026-09-05T07:43:18.813Z &middot; commit 96e0dcd &middot; quotes 50/50 OK</div>
+<table>
+<tr>
+<th title="source -> destination (chain-token pairs on bridge rows, DEX pair on stellar rows)">pair</th>
+<th title="instant = the UI's first price (Near only); all bridges = every bridge quoted in parallel; DEX router = on-chain Stellar swap via the production route">mode</th>
+<th title="successful quotes / attempts in this run">ok</th>
+<th title="median end-to-end HTTP latency: half of the quotes in the run answered at least this fast">p50 ms</th>
+<th title="tail latency: 19 of 20 quotes were faster (on 5 samples per row this is simply the slowest observed quote)">p95 ms</th>
+<th title="bridge rows: routes returned per quote; DEX-router rows: hops in the winning route">routes | hops</th>
+<th title="how much more the best aggregated route delivers vs the best single alternative in the same response; 1 bp = 0.01%">aggregation gain, bps</th>
+<th title="share of routes that arrived with a max-amount depth badge (maxAmountInUsd); n/a for on-chain DEX rows">capacity badge coverage</th>
+<th title="which bridges (or Stellar DEX venues) supplied routes across the run; a route split across pools counts once per pool">liquidity sources</th>
+<th title="direct = the bridge carries the transfer itself; single-pool / multi-hop (+split when one hop spans several pools) on DEX-router rows">route types</th>
+</tr>
+<tr>
+<td>bsc-usdt-&gt;eth-usdt</td><td>instant</td>
+<td>5/5</td>
+<td>907.8</td><td>1470.7</td>
+<td>1</td>
+<td>0</td>
+<td>20%</td>
+<td>near-intents:5</td><td>direct:5</td>
+</tr>
+<tr>
+<td>bsc-usdt-&gt;eth-usdt</td><td>all bridges</td>
+<td>5/5</td>
+<td>1182.7</td><td>1265.6</td>
+<td>2</td>
+<td>45.8</td>
+<td>100%</td>
+<td>near-intents:5 squid:5</td><td>direct:10</td>
+</tr>
+<tr>
+<td>eth-usdt-&gt;stellar-usdc</td><td>instant</td>
+<td>5/5</td>
+<td>1180.2</td><td>1337.5</td>
+<td>1</td>
+<td>0</td>
+<td>40%</td>
+<td>near-intents:5</td><td>direct:5</td>
+</tr>
+<tr>
+<td>eth-usdt-&gt;stellar-usdc</td><td>all bridges</td>
+<td>5/5</td>
+<td>1230.3</td><td>1472.6</td>
+<td>2</td>
+<td>4.6</td>
+<td>100%</td>
+<td>near-intents:5 squid:5</td><td>direct:10</td>
+</tr>
+<tr>
+<td>bsc-usdt-&gt;stellar-usdc</td><td>instant</td>
+<td>5/5</td>
+<td>1193.9</td><td>1810.4</td>
+<td>1</td>
+<td>0</td>
+<td>40%</td>
+<td>near-intents:5</td><td>direct:5</td>
+</tr>
+<tr>
+<td>bsc-usdt-&gt;stellar-usdc</td><td>all bridges</td>
+<td>5/5</td>
+<td>1250.9</td><td>1291.5</td>
+<td>2</td>
+<td>0.9</td>
+<td>100%</td>
+<td>squid:5 near-intents:5</td><td>direct:10</td>
+</tr>
+<tr>
+<td>stellar-usdc-&gt;eth-usdt</td><td>instant</td>
+<td>5/5</td>
+<td>1053.9</td><td>1180.5</td>
+<td>1</td>
+<td>0</td>
+<td>20%</td>
+<td>near-intents:5</td><td>direct:5</td>
+</tr>
+<tr>
+<td>stellar-usdc-&gt;eth-usdt</td><td>all bridges</td>
+<td>5/5</td>
+<td>1028.7</td><td>1245.4</td>
+<td>2</td>
+<td>50.3</td>
+<td>100%</td>
+<td>near-intents:5 squid:5</td><td>direct:10</td>
+</tr>
+<tr>
+<td>xlm-&gt;usdc</td><td>DEX router</td>
+<td>5/5</td>
+<td>457.4</td><td>463.7</td>
+<td>3</td>
+<td>0</td>
+<td>n/a</td>
+<td>sdex:20</td><td>multi-hop+split:5</td>
+</tr>
+<tr>
+<td>usdc-&gt;xlm</td><td>DEX router</td>
+<td>5/5</td>
+<td>443.7</td><td>465.8</td>
+<td>2</td>
+<td>0</td>
+<td>n/a</td>
+<td>sdex:10</td><td>multi-hop:5</td>
+</tr>
+</table>
+<div class="note">
+<p>Method: black-box dry quotes against public production endpoints, BENCH_REPS repetitions per pair per
+mode. Latency is end-to-end HTTP. Raw samples for every run live in report/history/.</p>
+<p>Reading the latency columns: p50 is the median - half of the quotes in the run answered at least this fast.
+p95 is the tail: 19 of 20 quotes were faster; with the default 5 repetitions per row, p95 is simply the slowest
+observed quote of the run.</p>
+<p>Bridge rows: "instant" is the UI's first price (Near only); "all bridges" quotes every bridge in parallel,
+so its latency is the slowest parallel answer - instant exists to show a price immediately, not to win on
+latency. Aggregation gain compares the best aggregated route with the best single alternative in the same
+response (0 when only one bridge quotes the pair); more competing bridges usually shrinks this number, which is
+aggregation working, not failing. Route types count returned routes per run: "direct" means the bridge carries
+the transfer itself; composite routes (bridge + a WOWMAX Stellar swap) will appear here once composite execution
+ships in the client. Liquidity-source counts are per fill: a route split across pools contributes one per pool.</p>
+<p>Capacity badge coverage is the share of routes that arrived with a max-amount depth badge (maxAmountInUsd -
+the figure the UI shows as a route's capacity). Allbridge exposes pool depth directly; Near and Squid publish no
+limits, so their badge comes from WOWMAX's own asynchronous capacity probe - coverage below 100% means the probe
+cache had not warmed for that route yet, not a routing defect. One unmeasured warm-up quote precedes each pair's
+samples so connection setup never lands in the columns.</p>
+<p>DEX-router rows measure the production adapter route the web app calls (/chains/100000148/quote, answered from
+the router's warm graph snapshot): hops, venue distribution (SDEX / AMMs) and route type - single-pool or multi-hop,
+"+split" when a hop is split across pools - come from the returned route. The gain figure there is the router's own
+"vs best single pool" figure, taken from one probe per pair of the rich documented /quote endpoint; by the D1
+contract that endpoint rebuilds the graph with live reserves on every request, so its latency is deliberately
+excluded from the latency columns. Capacity badge coverage does not apply to on-chain DEX routes and is shown
+as n/a.</p>
+</div>
+<h2>Observed bridge transfer times</h2>
+<table>
+<tr>
+<th title="bridge that carried the transfer">bridge</th>
+<th title="source -> destination of the live transfer">pair</th>
+<th title="transfer size in USD at the time of the run">amount</th>
+<th title="submission on the source chain to funds delivered on the destination">delivery</th>
+<th title="date of the live run">run date</th>
+<th>note</th>
+</tr>
+<tr>
+<td>allbridge</td><td>eth-usdt-&gt;stellar-usdc</td>
+<td>$100</td>
+<td>17m 27s</td>
+<td>2026-07-03</td>
+<td>-</td>
+</tr>
+<tr>
+<td>allbridge</td><td>stellar-usdc-&gt;bsc-usdc</td>
+<td>$23</td>
+<td>1m 24s</td>
+<td>2026-07-01</td>
+<td>-</td>
+</tr>
+<tr>
+<td>allbridge</td><td>eth-usdt-&gt;stellar-usdc</td>
+<td>$150</td>
+<td>17m 15s</td>
+<td>2026-07-03</td>
+<td>-</td>
+</tr>
+<tr>
+<td>squid</td><td>stellar-usdc-&gt;eth-usdt</td>
+<td>$20</td>
+<td>10s</td>
+<td>2026-07-01</td>
+<td>-</td>
+</tr>
+<tr>
+<td>squid</td><td>eth-usdc-&gt;stellar-usdc</td>
+<td>$5</td>
+<td>1m 14s</td>
+<td>2026-07-02</td>
+<td>-</td>
+</tr>
+<tr>
+<td>squid</td><td>stellar-usdc-&gt;eth-usdc</td>
+<td>$4</td>
+<td>10s</td>
+<td>2026-07-02</td>
+<td>-</td>
+</tr>
+<tr>
+<td>squid</td><td>bsc-usdc-&gt;stellar-usdc</td>
+<td>$4</td>
+<td>11s</td>
+<td>2026-07-02</td>
+<td>-</td>
+</tr>
+<tr>
+<td>near-intents</td><td>stellar-usdc-&gt;eth-usdt</td>
+<td>$980</td>
+<td>27s</td>
+<td>2026-07-01</td>
+<td>-</td>
+</tr>
+<tr>
+<td>near-intents</td><td>eth-usdc-&gt;stellar-usdc</td>
+<td>$3</td>
+<td>3m 29s</td>
+<td>2026-07-02</td>
+<td>-</td>
+</tr>
+<tr>
+<td>near-intents</td><td>stellar-usdc-&gt;bsc-usdc</td>
+<td>$160</td>
+<td>5m 20s</td>
+<td>2026-07-01</td>
+<td>-</td>
+</tr>
+<tr>
+<td>near-intents</td><td>bsc-usdc-&gt;stellar-usdc</td>
+<td>$6</td>
+<td>2m 33s</td>
+<td>2026-07-02</td>
+<td>-</td>
+</tr>
+</table>
+<div class="note">
+<p>End-to-end delivery of real transfers observed during live runs (seeded from the D5 report runs). The quote
+benchmarks above are dry and never move funds; this table only grows when a real delivery is observed and
+recorded.</p>
+</div>
+</body></html>
