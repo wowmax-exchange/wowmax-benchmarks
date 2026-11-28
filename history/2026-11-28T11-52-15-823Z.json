@@ -1,0 +1,1348 @@
+{
+  "report": {
+    "generatedAt": "2026-11-28T11:52:15.823Z",
+    "gitSha": "96e0dcd",
+    "totals": {
+      "quotes": 50,
+      "ok": 50
+    },
+    "pairs": [
+      {
+        "pair": "bsc-usdt->eth-usdt",
+        "mode": "fast",
+        "samples": 5,
+        "ok": 5,
+        "p50ms": 665.1,
+        "p95ms": 712.1,
+        "meanRoutes": 1,
+        "improvementBps": 0,
+        "bridges": {
+          "near-intents": 5
+        },
+        "kinds": {
+          "direct": 5
+        },
+        "capacityCoverage": 0
+      },
+      {
+        "pair": "bsc-usdt->eth-usdt",
+        "mode": "full",
+        "samples": 5,
+        "ok": 5,
+        "p50ms": 680.6,
+        "p95ms": 813.7,
+        "meanRoutes": 2,
+        "improvementBps": 7.9,
+        "bridges": {
+          "squid": 5,
+          "near-intents": 5
+        },
+        "kinds": {
+          "direct": 10
+        },
+        "capacityCoverage": 100
+      },
+      {
+        "pair": "eth-usdt->stellar-usdc",
+        "mode": "fast",
+        "samples": 5,
+        "ok": 5,
+        "p50ms": 1274,
+        "p95ms": 1486,
+        "meanRoutes": 1,
+        "improvementBps": 0,
+        "bridges": {
+          "near-intents": 5
+        },
+        "kinds": {
+          "direct": 5
+        },
+        "capacityCoverage": 40
+      },
+      {
+        "pair": "eth-usdt->stellar-usdc",
+        "mode": "full",
+        "samples": 5,
+        "ok": 5,
+        "p50ms": 1442,
+        "p95ms": 1525.5,
+        "meanRoutes": 2,
+        "improvementBps": 2,
+        "bridges": {
+          "squid": 5,
+          "near-intents": 5
+        },
+        "kinds": {
+          "direct": 10
+        },
+        "capacityCoverage": 100
+      },
+      {
+        "pair": "bsc-usdt->stellar-usdc",
+        "mode": "fast",
+        "samples": 5,
+        "ok": 5,
+        "p50ms": 1286.4,
+        "p95ms": 1518.3,
+        "meanRoutes": 1,
+        "improvementBps": 0,
+        "bridges": {
+          "near-intents": 5
+        },
+        "kinds": {
+          "direct": 5
+        },
+        "capacityCoverage": 40
+      },
+      {
+        "pair": "bsc-usdt->stellar-usdc",
+        "mode": "full",
+        "samples": 5,
+        "ok": 5,
+        "p50ms": 1280.8,
+        "p95ms": 1462.1,
+        "meanRoutes": 2,
+        "improvementBps": 9.4,
+        "bridges": {
+          "squid": 5,
+          "near-intents": 5
+        },
+        "kinds": {
+          "direct": 10
+        },
+        "capacityCoverage": 100
+      },
+      {
+        "pair": "stellar-usdc->eth-usdt",
+        "mode": "fast",
+        "samples": 5,
+        "ok": 5,
+        "p50ms": 1189,
+        "p95ms": 1423.2,
+        "meanRoutes": 1,
+        "improvementBps": 0,
+        "bridges": {
+          "near-intents": 5
+        },
+        "kinds": {
+          "direct": 5
+        },
+        "capacityCoverage": 20
+      },
+      {
+        "pair": "stellar-usdc->eth-usdt",
+        "mode": "full",
+        "samples": 5,
+        "ok": 5,
+        "p50ms": 1157.2,
+        "p95ms": 1408.4,
+        "meanRoutes": 2,
+        "improvementBps": 50.1,
+        "bridges": {
+          "squid": 5,
+          "near-intents": 5
+        },
+        "kinds": {
+          "direct": 10
+        },
+        "capacityCoverage": 100
+      },
+      {
+        "pair": "xlm->usdc",
+        "mode": "stellar",
+        "samples": 5,
+        "ok": 5,
+        "p50ms": 488,
+        "p95ms": 508.7,
+        "meanRoutes": 1,
+        "improvementBps": 0,
+        "bridges": {
+          "sdex": 5
+        },
+        "kinds": {
+          "single-pool": 5
+        },
+        "capacityCoverage": null
+      },
+      {
+        "pair": "usdc->xlm",
+        "mode": "stellar",
+        "samples": 5,
+        "ok": 5,
+        "p50ms": 514,
+        "p95ms": 564.5,
+        "meanRoutes": 1,
+        "improvementBps": 0,
+        "bridges": {
+          "sdex": 5
+        },
+        "kinds": {
+          "single-pool": 5
+        },
+        "capacityCoverage": null
+      }
+    ],
+    "transferTimes": [
+      {
+        "bridge": "allbridge",
+        "pair": "eth-usdt->stellar-usdc",
+        "amountUsd": 100,
+        "seconds": 1047,
+        "date": "2026-07-03",
+        "note": null
+      },
+      {
+        "bridge": "allbridge",
+        "pair": "stellar-usdc->bsc-usdc",
+        "amountUsd": 23,
+        "seconds": 84,
+        "date": "2026-07-01",
+        "note": null
+      },
+      {
+        "bridge": "allbridge",
+        "pair": "eth-usdt->stellar-usdc",
+        "amountUsd": 150,
+        "seconds": 1035,
+        "date": "2026-07-03",
+        "note": null
+      },
+      {
+        "bridge": "squid",
+        "pair": "stellar-usdc->eth-usdt",
+        "amountUsd": 20,
+        "seconds": 10,
+        "date": "2026-07-01",
+        "note": null
+      },
+      {
+        "bridge": "squid",
+        "pair": "eth-usdc->stellar-usdc",
+        "amountUsd": 5,
+        "seconds": 74,
+        "date": "2026-07-02",
+        "note": null
+      },
+      {
+        "bridge": "squid",
+        "pair": "stellar-usdc->eth-usdc",
+        "amountUsd": 4,
+        "seconds": 10,
+        "date": "2026-07-02",
+        "note": null
+      },
+      {
+        "bridge": "squid",
+        "pair": "bsc-usdc->stellar-usdc",
+        "amountUsd": 4,
+        "seconds": 11,
+        "date": "2026-07-02",
+        "note": null
+      },
+      {
+        "bridge": "near-intents",
+        "pair": "stellar-usdc->eth-usdt",
+        "amountUsd": 980,
+        "seconds": 27,
+        "date": "2026-07-01",
+        "note": null
+      },
+      {
+        "bridge": "near-intents",
+        "pair": "eth-usdc->stellar-usdc",
+        "amountUsd": 3,
+        "seconds": 209,
+        "date": "2026-07-02",
+        "note": null
+      },
+      {
+        "bridge": "near-intents",
+        "pair": "stellar-usdc->bsc-usdc",
+        "amountUsd": 160,
+        "seconds": 320,
+        "date": "2026-07-01",
+        "note": null
+      },
+      {
+        "bridge": "near-intents",
+        "pair": "bsc-usdc->stellar-usdc",
+        "amountUsd": 6,
+        "seconds": 153,
+        "date": "2026-07-02",
+        "note": null
+      }
+    ]
+  },
+  "samples": [
+    {
+      "pair": "bsc-usdt->eth-usdt",
+      "mode": "fast",
+      "ms": 712.1075960000003,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.590809",
+          "amountOutUsd": 99.521692978554,
+          "netUsd": 99.521692978554,
+          "etaSeconds": 42,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->eth-usdt",
+      "mode": "fast",
+      "ms": 665.0607020000002,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.590809",
+          "amountOutUsd": 99.521692978554,
+          "netUsd": 99.521692978554,
+          "etaSeconds": 42,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->eth-usdt",
+      "mode": "fast",
+      "ms": 665.7986889999993,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.590809",
+          "amountOutUsd": 99.521692978554,
+          "netUsd": 99.521692978554,
+          "etaSeconds": 42,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->eth-usdt",
+      "mode": "fast",
+      "ms": 665.0548320000007,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.590809",
+          "amountOutUsd": 99.521692978554,
+          "netUsd": 99.521692978554,
+          "etaSeconds": 42,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->eth-usdt",
+      "mode": "fast",
+      "ms": 652.3761700000005,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.590809",
+          "amountOutUsd": 99.521692978554,
+          "netUsd": 99.521692978554,
+          "etaSeconds": 42,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->eth-usdt",
+      "mode": "full",
+      "ms": 813.7137120000007,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.671963",
+          "amountOutUsd": 99.6,
+          "netUsd": 99.6,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 1500
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.590809",
+          "amountOutUsd": 99.521692978554,
+          "netUsd": 99.521692978554,
+          "etaSeconds": 42,
+          "maxAmountInUsd": 400000
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->eth-usdt",
+      "mode": "full",
+      "ms": 680.4690689999989,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.671963",
+          "amountOutUsd": 99.6,
+          "netUsd": 99.6,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 1500
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.590809",
+          "amountOutUsd": 99.521692978554,
+          "netUsd": 99.521692978554,
+          "etaSeconds": 42,
+          "maxAmountInUsd": 400000
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->eth-usdt",
+      "mode": "full",
+      "ms": 680.6293459999997,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.671963",
+          "amountOutUsd": 99.6,
+          "netUsd": 99.6,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 1500
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.590809",
+          "amountOutUsd": 99.521692978554,
+          "netUsd": 99.521692978554,
+          "etaSeconds": 42,
+          "maxAmountInUsd": 400000
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->eth-usdt",
+      "mode": "full",
+      "ms": 692.5268290000004,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.671963",
+          "amountOutUsd": 99.6,
+          "netUsd": 99.6,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 1500
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.590809",
+          "amountOutUsd": 99.521692978554,
+          "netUsd": 99.521692978554,
+          "etaSeconds": 42,
+          "maxAmountInUsd": 400000
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->eth-usdt",
+      "mode": "full",
+      "ms": 671.3205670000007,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.671963",
+          "amountOutUsd": 99.6,
+          "netUsd": 99.6,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 1500
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.590809",
+          "amountOutUsd": 99.521692978554,
+          "netUsd": 99.521692978554,
+          "etaSeconds": 42,
+          "maxAmountInUsd": 400000
+        }
+      ]
+    },
+    {
+      "pair": "eth-usdt->stellar-usdc",
+      "mode": "fast",
+      "ms": 1486.047360999999,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.870012",
+          "amountOutUsd": 99.836755286004,
+          "netUsd": 99.836755286004,
+          "etaSeconds": 62,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "eth-usdt->stellar-usdc",
+      "mode": "fast",
+      "ms": 1273.955836000001,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.8651554",
+          "amountOutUsd": 99.831900303252,
+          "netUsd": 99.831900303252,
+          "etaSeconds": 62,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "eth-usdt->stellar-usdc",
+      "mode": "fast",
+      "ms": 1256.5905660000026,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.870008",
+          "amountOutUsd": 99.836751287336,
+          "netUsd": 99.836751287336,
+          "etaSeconds": 62,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "eth-usdt->stellar-usdc",
+      "mode": "fast",
+      "ms": 1459.5979000000007,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.8651554",
+          "amountOutUsd": 99.831900303252,
+          "netUsd": 99.831900303252,
+          "etaSeconds": 62,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "eth-usdt->stellar-usdc",
+      "mode": "fast",
+      "ms": 1270.30544,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.8651554",
+          "amountOutUsd": 99.831900303252,
+          "netUsd": 99.831900303252,
+          "etaSeconds": 62,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "eth-usdt->stellar-usdc",
+      "mode": "full",
+      "ms": 1525.5220980000013,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.8912775",
+          "amountOutUsd": 99.85,
+          "netUsd": 99.82,
+          "etaSeconds": 30,
+          "maxAmountInUsd": 25000
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.8651554",
+          "amountOutUsd": 99.831900303252,
+          "netUsd": 99.831900303252,
+          "etaSeconds": 62,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "eth-usdt->stellar-usdc",
+      "mode": "full",
+      "ms": 1293.8381750000008,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.8912775",
+          "amountOutUsd": 99.85,
+          "netUsd": 99.82,
+          "etaSeconds": 30,
+          "maxAmountInUsd": 25000
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.870007",
+          "amountOutUsd": 99.836750287669,
+          "netUsd": 99.836750287669,
+          "etaSeconds": 62,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "eth-usdt->stellar-usdc",
+      "mode": "full",
+      "ms": 1279.3195019999985,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.8912775",
+          "amountOutUsd": 99.85,
+          "netUsd": 99.82,
+          "etaSeconds": 30,
+          "maxAmountInUsd": 25000
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.870007",
+          "amountOutUsd": 99.836750287669,
+          "netUsd": 99.836750287669,
+          "etaSeconds": 62,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "eth-usdt->stellar-usdc",
+      "mode": "full",
+      "ms": 1442.0341200000003,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.8912775",
+          "amountOutUsd": 99.85,
+          "netUsd": 99.80999999999999,
+          "etaSeconds": 30,
+          "maxAmountInUsd": 25000
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.870007",
+          "amountOutUsd": 99.837349507711,
+          "netUsd": 99.837349507711,
+          "etaSeconds": 62,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "eth-usdt->stellar-usdc",
+      "mode": "full",
+      "ms": 1507.772014000002,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.8912775",
+          "amountOutUsd": 99.85,
+          "netUsd": 99.80999999999999,
+          "etaSeconds": 30,
+          "maxAmountInUsd": 25000
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "99.870007",
+          "amountOutUsd": 99.837349507711,
+          "netUsd": 99.837349507711,
+          "etaSeconds": 62,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->stellar-usdc",
+      "mode": "fast",
+      "ms": 1518.270043000004,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.8917859",
+          "amountOutUsd": 49.875471286011,
+          "netUsd": 49.875471286011,
+          "etaSeconds": 52,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->stellar-usdc",
+      "mode": "fast",
+      "ms": 1443.9354630000016,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.8917859",
+          "amountOutUsd": 49.875471286011,
+          "netUsd": 49.875471286011,
+          "etaSeconds": 52,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->stellar-usdc",
+      "mode": "fast",
+      "ms": 1286.4032789999983,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.8917859",
+          "amountOutUsd": 49.875471286011,
+          "netUsd": 49.875471286011,
+          "etaSeconds": 52,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->stellar-usdc",
+      "mode": "fast",
+      "ms": 1285.7940230000022,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.886247",
+          "amountOutUsd": 49.869934197231,
+          "netUsd": 49.869934197231,
+          "etaSeconds": 52,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->stellar-usdc",
+      "mode": "fast",
+      "ms": 1261.7991619999957,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.8917859",
+          "amountOutUsd": 49.875471286011,
+          "netUsd": 49.875471286011,
+          "etaSeconds": 52,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->stellar-usdc",
+      "mode": "full",
+      "ms": 1250.2999969999946,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.9504413",
+          "amountOutUsd": 49.93,
+          "netUsd": 49.92,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 25000
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.8917859",
+          "amountOutUsd": 49.875471286011,
+          "netUsd": 49.875471286011,
+          "etaSeconds": 52,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->stellar-usdc",
+      "mode": "full",
+      "ms": 1278.5841470000014,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.9504413",
+          "amountOutUsd": 49.93,
+          "netUsd": 49.92,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 25000
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.8917859",
+          "amountOutUsd": 49.875471286011,
+          "netUsd": 49.875471286011,
+          "etaSeconds": 52,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->stellar-usdc",
+      "mode": "full",
+      "ms": 1439.5082429999966,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.9504413",
+          "amountOutUsd": 49.93,
+          "netUsd": 49.92,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 25000
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.8917859",
+          "amountOutUsd": 49.875471286011,
+          "netUsd": 49.875471286011,
+          "etaSeconds": 52,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->stellar-usdc",
+      "mode": "full",
+      "ms": 1462.089221000002,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.9504413",
+          "amountOutUsd": 49.93,
+          "netUsd": 49.92,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 25000
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.886247",
+          "amountOutUsd": 49.869934197231,
+          "netUsd": 49.869934197231,
+          "etaSeconds": 52,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "bsc-usdt->stellar-usdc",
+      "mode": "full",
+      "ms": 1280.7756070000032,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.9504413",
+          "amountOutUsd": 49.93,
+          "netUsd": 49.92,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 25000
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.886247",
+          "amountOutUsd": 49.869934197231,
+          "netUsd": 49.869934197231,
+          "etaSeconds": 52,
+          "maxAmountInUsd": 100000
+        }
+      ]
+    },
+    {
+      "pair": "stellar-usdc->eth-usdt",
+      "mode": "fast",
+      "ms": 1423.2251400000023,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.710365",
+          "amountOutUsd": 49.6765619518,
+          "netUsd": 49.6765619518,
+          "etaSeconds": 34,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "stellar-usdc->eth-usdt",
+      "mode": "fast",
+      "ms": 1161.9741370000047,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.710365",
+          "amountOutUsd": 49.6765619518,
+          "netUsd": 49.6765619518,
+          "etaSeconds": 34,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "stellar-usdc->eth-usdt",
+      "mode": "fast",
+      "ms": 1201.195212000006,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.710365",
+          "amountOutUsd": 49.6765619518,
+          "netUsd": 49.6765619518,
+          "etaSeconds": 34,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "stellar-usdc->eth-usdt",
+      "mode": "fast",
+      "ms": 1188.9929360000024,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.710365",
+          "amountOutUsd": 49.6765619518,
+          "netUsd": 49.6765619518,
+          "etaSeconds": 34,
+          "maxAmountInUsd": null
+        }
+      ]
+    },
+    {
+      "pair": "stellar-usdc->eth-usdt",
+      "mode": "fast",
+      "ms": 1131.7570449999985,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.710365",
+          "amountOutUsd": 49.6765619518,
+          "netUsd": 49.6765619518,
+          "etaSeconds": 34,
+          "maxAmountInUsd": 400000
+        }
+      ]
+    },
+    {
+      "pair": "stellar-usdc->eth-usdt",
+      "mode": "full",
+      "ms": 1157.155104999998,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.967559",
+          "amountOutUsd": 49.93,
+          "netUsd": 49.93,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 1500
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.716138",
+          "amountOutUsd": 49.68233102616,
+          "netUsd": 49.68233102616,
+          "etaSeconds": 34,
+          "maxAmountInUsd": 400000
+        }
+      ]
+    },
+    {
+      "pair": "stellar-usdc->eth-usdt",
+      "mode": "full",
+      "ms": 1408.3578740000012,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.967558",
+          "amountOutUsd": 49.93,
+          "netUsd": 49.93,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 1500
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.716138",
+          "amountOutUsd": 49.68233102616,
+          "netUsd": 49.68233102616,
+          "etaSeconds": 34,
+          "maxAmountInUsd": 400000
+        }
+      ]
+    },
+    {
+      "pair": "stellar-usdc->eth-usdt",
+      "mode": "full",
+      "ms": 1273.4550630000012,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.967558",
+          "amountOutUsd": 49.93,
+          "netUsd": 49.93,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 1500
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.710365",
+          "amountOutUsd": 49.6765619518,
+          "netUsd": 49.6765619518,
+          "etaSeconds": 34,
+          "maxAmountInUsd": 400000
+        }
+      ]
+    },
+    {
+      "pair": "stellar-usdc->eth-usdt",
+      "mode": "full",
+      "ms": 1141.9026779999986,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.967384",
+          "amountOutUsd": 49.93,
+          "netUsd": 49.93,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 1500
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.716138",
+          "amountOutUsd": 49.68233102616,
+          "netUsd": 49.68233102616,
+          "etaSeconds": 34,
+          "maxAmountInUsd": 400000
+        }
+      ]
+    },
+    {
+      "pair": "stellar-usdc->eth-usdt",
+      "mode": "full",
+      "ms": 1107.1633440000005,
+      "status": 200,
+      "routes": [
+        {
+          "bridge": "squid",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.967384",
+          "amountOutUsd": 49.93,
+          "netUsd": 49.93,
+          "etaSeconds": 10,
+          "maxAmountInUsd": 1500
+        },
+        {
+          "bridge": "near-intents",
+          "kind": "direct",
+          "via": null,
+          "amountOut": "49.716138",
+          "amountOutUsd": 49.68233102616,
+          "netUsd": 49.68233102616,
+          "etaSeconds": 34,
+          "maxAmountInUsd": 400000
+        }
+      ]
+    },
+    {
+      "pair": "xlm->usdc",
+      "mode": "stellar",
+      "ms": 481.70695200000773,
+      "status": 200,
+      "routes": null,
+      "stellar": {
+        "hops": 1,
+        "routeType": "single-pool",
+        "venues": {
+          "sdex": 1
+        },
+        "advantageBps": 0
+      }
+    },
+    {
+      "pair": "xlm->usdc",
+      "mode": "stellar",
+      "ms": 508.68892199998663,
+      "status": 200,
+      "routes": null,
+      "stellar": {
+        "hops": 1,
+        "routeType": "single-pool",
+        "venues": {
+          "sdex": 1
+        },
+        "advantageBps": null
+      }
+    },
+    {
+      "pair": "xlm->usdc",
+      "mode": "stellar",
+      "ms": 480.51377499999944,
+      "status": 200,
+      "routes": null,
+      "stellar": {
+        "hops": 1,
+        "routeType": "single-pool",
+        "venues": {
+          "sdex": 1
+        },
+        "advantageBps": null
+      }
+    },
+    {
+      "pair": "xlm->usdc",
+      "mode": "stellar",
+      "ms": 487.9700940000039,
+      "status": 200,
+      "routes": null,
+      "stellar": {
+        "hops": 1,
+        "routeType": "single-pool",
+        "venues": {
+          "sdex": 1
+        },
+        "advantageBps": null
+      }
+    },
+    {
+      "pair": "xlm->usdc",
+      "mode": "stellar",
+      "ms": 503.7080799999967,
+      "status": 200,
+      "routes": null,
+      "stellar": {
+        "hops": 1,
+        "routeType": "single-pool",
+        "venues": {
+          "sdex": 1
+        },
+        "advantageBps": null
+      }
+    },
+    {
+      "pair": "usdc->xlm",
+      "mode": "stellar",
+      "ms": 564.5124030000006,
+      "status": 200,
+      "routes": null,
+      "stellar": {
+        "hops": 1,
+        "routeType": "single-pool",
+        "venues": {
+          "sdex": 1
+        },
+        "advantageBps": 0
+      }
+    },
+    {
+      "pair": "usdc->xlm",
+      "mode": "stellar",
+      "ms": 518.5590679999877,
+      "status": 200,
+      "routes": null,
+      "stellar": {
+        "hops": 1,
+        "routeType": "single-pool",
+        "venues": {
+          "sdex": 1
+        },
+        "advantageBps": null
+      }
+    },
+    {
+      "pair": "usdc->xlm",
+      "mode": "stellar",
+      "ms": 481.78176999998686,
+      "status": 200,
+      "routes": null,
+      "stellar": {
+        "hops": 1,
+        "routeType": "single-pool",
+        "venues": {
+          "sdex": 1
+        },
+        "advantageBps": null
+      }
+    },
+    {
+      "pair": "usdc->xlm",
+      "mode": "stellar",
+      "ms": 513.9524050000036,
+      "status": 200,
+      "routes": null,
+      "stellar": {
+        "hops": 1,
+        "routeType": "single-pool",
+        "venues": {
+          "sdex": 1
+        },
+        "advantageBps": null
+      }
+    },
+    {
+      "pair": "usdc->xlm",
+      "mode": "stellar",
+      "ms": 510.16820099999313,
+      "status": 200,
+      "routes": null,
+      "stellar": {
+        "hops": 1,
+        "routeType": "single-pool",
+        "venues": {
+          "sdex": 1
+        },
+        "advantageBps": null
+      }
+    }
+  ]
+}
